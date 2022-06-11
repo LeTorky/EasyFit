@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CoachingApp.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using CoachingApp.Implementations;
 
 namespace CoachingApp.Controllers
 {
@@ -10,9 +11,11 @@ namespace CoachingApp.Controllers
     public class TestController : ControllerBase
     {
         private ITest Test;
-        public TestController(ITest test)
+        private IdentityApplicationContext _context;
+        public TestController(ITest test, IdentityApplicationContext context)
         {
             Test = test;
+            _context = context;
         }
         [HttpGet("Index")]
         public async Task<ActionResult> Index()
@@ -20,10 +23,9 @@ namespace CoachingApp.Controllers
             return await Test.TestMethod();
         }
         [HttpGet("SignIn")]
-        [Authorize(Roles = "COACH")]
-        public ActionResult Testing()
+        public object Testing()
         {
-            return new OkResult();
+            return _context.Users.FirstOrDefault();
         }
     }
 }

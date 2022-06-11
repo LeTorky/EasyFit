@@ -5,12 +5,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using CoachingApp.Interfaces;
 using CoachingApp.Implementations;
-
 // Create application builder.
 var builder = WebApplication.CreateBuilder(args); // Creates builder.
 
 // Add services to the container.
-builder.Services.AddControllers(); // Maps URL with controllers.
+builder.Services.AddControllers() // Maps URL with controllers.
+    .AddNewtonsoftJson(options => // Serializes Action returns.
+{
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; // Handles Loop Referencing.
+}); 
 builder.Services.AddDbContext<IdentityApplicationContext>(optionsAction => // DBContext DI.
 {
     optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConneciton")); // Fetches connection string.
