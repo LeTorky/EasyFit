@@ -8,31 +8,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    [Table("Client_coach_WOsubscription")]
-    public partial class Client_coach_WOsubscription
+    [Table("Client_Workout_WSub")]
+    public partial class Client_Workout_WSub
     {
         [Key]
         public int clientID { get; set; }
         [Key]
-        public int coachID { get; set; }
+        public int workoutID { get; set; }
         [Key]
         public int subID { get; set; }
-        public bool? accept { get; set; }
-        public int? rating { get; set; }
+        public bool? status { get; set; }
+        [StringLength(200)]
+        [Unicode(false)]
+        public string clientNotes { get; set; }
         [Key]
         [Column(TypeName = "date")]
-        public DateTime startDate { get; set; }
-        [Unicode(false)]
-        public string comment { get; set; }
+        public DateTime date { get; set; }
 
         [ForeignKey("clientID")]
-        [InverseProperty("Client_coach_WOsubscriptions")]
-        public virtual client client { get; set; }
-        [ForeignKey("coachID")]
-        [InverseProperty("Client_coach_WOsubscriptions")]
-        public virtual coach coach { get; set; }
+        [InverseProperty("Client_Workout_WSubs")]
+        public virtual Client client { get; set; }
         [ForeignKey("subID")]
-        [InverseProperty("Client_coach_WOsubscriptions")]
+        [InverseProperty("Client_Workout_WSubs")]
         public virtual Workout_Subscription sub { get; set; }
+        [ForeignKey("workoutID")]
+        [InverseProperty("Client_Workout_WSubs")]
+        public virtual Workout workout { get; set; }
     }
 }

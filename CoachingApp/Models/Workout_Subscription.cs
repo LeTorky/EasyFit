@@ -13,8 +13,8 @@ namespace CoachingApp.Models
     {
         public Workout_Subscription()
         {
-            Client_coach_WOsubscriptions = new HashSet<Client_coach_WOsubscription>();
-            client_workout_subs = new HashSet<client_workout_sub>();
+            Client_WSubs = new HashSet<Client_WSub>();
+            Client_Workout_WSubs = new HashSet<Client_Workout_WSub>();
         }
 
         [Key]
@@ -25,10 +25,10 @@ namespace CoachingApp.Models
 
         [ForeignKey("coachID")]
         [InverseProperty("Workout_Subscriptions")]
-        public virtual coach coach { get; set; }
+        public virtual Coach coach { get; set; }
         [InverseProperty("sub")]
-        public virtual ICollection<Client_coach_WOsubscription> Client_coach_WOsubscriptions { get; set; }
+        public virtual ICollection<Client_WSub> Client_WSubs { get; set; }
         [InverseProperty("sub")]
-        public virtual ICollection<client_workout_sub> client_workout_subs { get; set; }
+        public virtual ICollection<Client_Workout_WSub> Client_Workout_WSubs { get; set; }
     }
 }

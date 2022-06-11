@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    [Table("meal")]
-    public partial class meal
+    [Table("Meal")]
+    public partial class Meal
     {
-        public meal()
+        public Meal()
         {
-            client_meal_subs = new HashSet<client_meal_sub>();
+            Client_Meal_NSubs = new HashSet<Client_Meal_NSub>();
         }
 
         [Key]
@@ -21,12 +21,12 @@ namespace CoachingApp.Models
         [StringLength(200)]
         [Unicode(false)]
         public string description { get; set; }
-        public int? coachID { get; set; }
+        public int coachID { get; set; }
 
         [ForeignKey("coachID")]
-        [InverseProperty("meals")]
-        public virtual coach coach { get; set; }
+        [InverseProperty("Meals")]
+        public virtual Coach coach { get; set; }
         [InverseProperty("meal")]
-        public virtual ICollection<client_meal_sub> client_meal_subs { get; set; }
+        public virtual ICollection<Client_Meal_NSub> Client_Meal_NSubs { get; set; }
     }
 }

@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    public partial class Workout_Set
+    public partial class WorkoutSet
     {
-        public Workout_Set()
+        public WorkoutSet()
         {
-            workouts_in_sets = new HashSet<workouts_in_set>();
+            Workout_WorkoutSets = new HashSet<Workout_WorkoutSet>();
         }
 
         [Key]
@@ -23,9 +23,9 @@ namespace CoachingApp.Models
         public int? coachID { get; set; }
 
         [ForeignKey("coachID")]
-        [InverseProperty("Workout_Sets")]
-        public virtual coach coach { get; set; }
+        [InverseProperty("WorkoutSets")]
+        public virtual Coach coach { get; set; }
         [InverseProperty("workout_set")]
-        public virtual ICollection<workouts_in_set> workouts_in_sets { get; set; }
+        public virtual ICollection<Workout_WorkoutSet> Workout_WorkoutSets { get; set; }
     }
 }

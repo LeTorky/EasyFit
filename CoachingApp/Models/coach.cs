@@ -9,26 +9,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    [Table("coach")]
-    public partial class coach
+    [Table("Coach")]
+    public partial class Coach
     {
-        public coach()
+        public Coach()
         {
-            Client_coach_Nsubscriptions = new HashSet<Client_coach_Nsubscription>();
-            Client_coach_WOsubscriptions = new HashSet<Client_coach_WOsubscription>();
+            Certificates = new HashSet<Certificate>();
             Excercises = new HashSet<Excercise>();
-            Workout_Sets = new HashSet<Workout_Set>();
+            Meals = new HashSet<Meal>();
+            Nutrition_Subscriptions = new HashSet<Nutrition_Subscription>();
+            WorkoutSets = new HashSet<WorkoutSet>();
             Workout_Subscriptions = new HashSet<Workout_Subscription>();
             Workouts = new HashSet<Workout>();
-            certificates = new HashSet<certificate>();
-            meals = new HashSet<meal>();
-            nutrition_subscriptions = new HashSet<nutrition_subscription>();
         }
 
         [Key]
         public int id { get; set; }
         [ForeignKey("User")]
-        public string UserId { get; set; }
+        public Guid userId { get; set; }
         public int age { get; set; }
         [StringLength(50)]
         public string lastName { get; set; }
@@ -53,26 +51,21 @@ namespace CoachingApp.Models
         [StringLength(30)]
         [Unicode(false)]
         public string image { get; set; }
+        public virtual IdentityApplicationUser User { get; set; }
 
         [InverseProperty("coach")]
-        public virtual ICollection<Client_coach_Nsubscription> Client_coach_Nsubscriptions { get; set; }
-        [InverseProperty("coach")]
-        public virtual ICollection<Client_coach_WOsubscription> Client_coach_WOsubscriptions { get; set; }
+        public virtual ICollection<Certificate> Certificates { get; set; }
         [InverseProperty("coach")]
         public virtual ICollection<Excercise> Excercises { get; set; }
         [InverseProperty("coach")]
-        public virtual ICollection<Workout_Set> Workout_Sets { get; set; }
+        public virtual ICollection<Meal> Meals { get; set; }
+        [InverseProperty("coach")]
+        public virtual ICollection<Nutrition_Subscription> Nutrition_Subscriptions { get; set; }
+        [InverseProperty("coach")]
+        public virtual ICollection<WorkoutSet> WorkoutSets { get; set; }
         [InverseProperty("coach")]
         public virtual ICollection<Workout_Subscription> Workout_Subscriptions { get; set; }
         [InverseProperty("coach")]
         public virtual ICollection<Workout> Workouts { get; set; }
-        [InverseProperty("coach")]
-        public virtual ICollection<certificate> certificates { get; set; }
-        [InverseProperty("coach")]
-        public virtual ICollection<meal> meals { get; set; }
-        [InverseProperty("coach")]
-        public virtual ICollection<nutrition_subscription> nutrition_subscriptions { get; set; }
-        public virtual IdentityApplicationUser User { get; set; }
-
     }
 }

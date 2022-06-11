@@ -9,21 +9,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    [Table("client")]
-    public partial class client
+    [Table("Client")]
+    public partial class Client
     {
-        public client()
+        public Client()
         {
-            Client_coach_Nsubscriptions = new HashSet<Client_coach_Nsubscription>();
-            Client_coach_WOsubscriptions = new HashSet<Client_coach_WOsubscription>();
-            client_meal_subs = new HashSet<client_meal_sub>();
-            client_workout_subs = new HashSet<client_workout_sub>();
+            Client_Meal_NSubs = new HashSet<Client_Meal_NSub>();
+            Client_NSubs = new HashSet<Client_NSub>();
+            Client_WSubs = new HashSet<Client_WSub>();
+            Client_Workout_WSubs = new HashSet<Client_Workout_WSub>();
         }
 
         [Key]
         public int id { get; set; }
         [ForeignKey("User")]
-        public string UserId { get; set; }
+        public Guid userId { get; set; }
         public int age { get; set; }
         [StringLength(50)]
         public string lastName { get; set; }
@@ -42,15 +42,15 @@ namespace CoachingApp.Models
         public double? weight { get; set; }
         [StringLength(30)]
         public string image { get; set; }
+        public virtual IdentityApplicationUser User { get; set; }
 
         [InverseProperty("client")]
-        public virtual ICollection<Client_coach_Nsubscription> Client_coach_Nsubscriptions { get; set; }
+        public virtual ICollection<Client_Meal_NSub> Client_Meal_NSubs { get; set; }
         [InverseProperty("client")]
-        public virtual ICollection<Client_coach_WOsubscription> Client_coach_WOsubscriptions { get; set; }
+        public virtual ICollection<Client_NSub> Client_NSubs { get; set; }
         [InverseProperty("client")]
-        public virtual ICollection<client_meal_sub> client_meal_subs { get; set; }
+        public virtual ICollection<Client_WSub> Client_WSubs { get; set; }
         [InverseProperty("client")]
-        public virtual ICollection<client_workout_sub> client_workout_subs { get; set; }
-        public virtual IdentityApplicationUser User { get; set; }
+        public virtual ICollection<Client_Workout_WSub> Client_Workout_WSubs { get; set; }
     }
 }

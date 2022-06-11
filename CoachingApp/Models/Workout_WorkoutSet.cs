@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    public partial class workouts_in_set
+    public partial class Workout_WorkoutSet
     {
         [Key]
         public int workout_set_id { get; set; }
@@ -17,10 +17,10 @@ namespace CoachingApp.Models
         public int rank { get; set; }
 
         [ForeignKey("workoutID")]
-        [InverseProperty("workouts_in_sets")]
+        [InverseProperty("Workout_WorkoutSets")]
         public virtual Workout workout { get; set; }
         [ForeignKey("workout_set_id")]
-        [InverseProperty("workouts_in_sets")]
-        public virtual Workout_Set workout_set { get; set; }
+        [InverseProperty("Workout_WorkoutSets")]
+        public virtual WorkoutSet workout_set { get; set; }
     }
 }

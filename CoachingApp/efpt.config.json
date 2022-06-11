@@ -1,0 +1,95 @@
+﻿{
+   "CodeGenerationMode": 2,
+   "ContextClassName": "GymawyyContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Models",
+   "ProjectRootNamespace": "CoachingApp",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[Certificates]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Client]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Client_Meal_NSub]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Client_NSub]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Client_Workout_WSub]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Client_WSub]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Coach]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Excercise]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Meal]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Nutrition_Subscription]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Workout]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Workout_Exercise]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Workout_Subscription]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Workout_WorkoutSets]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[WorkoutSets]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "gymawyy.Gymawyy",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}

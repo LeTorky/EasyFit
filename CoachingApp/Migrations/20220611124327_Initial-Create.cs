@@ -13,7 +13,7 @@ namespace CoachingApp.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -27,7 +27,7 @@ namespace CoachingApp.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -54,7 +54,7 @@ namespace CoachingApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -75,7 +75,7 @@ namespace CoachingApp.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -97,7 +97,7 @@ namespace CoachingApp.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,8 +114,8 @@ namespace CoachingApp.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -138,7 +138,7 @@ namespace CoachingApp.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -155,11 +155,12 @@ namespace CoachingApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "client",
+                name: "Client",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     age = table.Column<int>(type: "int", nullable: false),
                     lastName = table.Column<string>(type: "nchar(50)", fixedLength: true, maxLength: 50, nullable: true),
                     firstName = table.Column<string>(type: "nchar(50)", fixedLength: true, maxLength: 50, nullable: true),
@@ -174,20 +175,22 @@ namespace CoachingApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_client", x => x.id);
+                    table.PrimaryKey("PK_Client", x => x.id);
                     table.ForeignKey(
-                        name: "FK_client_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Client_AspNetUsers_userId",
+                        column: x => x.userId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "coach",
+                name: "Coach",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    userId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     age = table.Column<int>(type: "int", nullable: false),
                     lastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     firstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -203,16 +206,17 @@ namespace CoachingApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_coach", x => x.id);
+                    table.PrimaryKey("PK_Coach", x => x.id);
                     table.ForeignKey(
-                        name: "FK_coach_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Coach_AspNetUsers_userId",
+                        column: x => x.userId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "certificates",
+                name: "Certificates",
                 columns: table => new
                 {
                     name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
@@ -225,7 +229,7 @@ namespace CoachingApp.Migrations
                     table.ForeignKey(
                         name: "FK_certificates_coach",
                         column: x => x.coachID,
-                        principalTable: "coach",
+                        principalTable: "Coach",
                         principalColumn: "id");
                 });
 
@@ -233,10 +237,11 @@ namespace CoachingApp.Migrations
                 name: "Excercise",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     description = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
-                    link = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: true),
-                    coachID = table.Column<int>(type: "int", nullable: true)
+                    link = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
+                    coachID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -244,44 +249,46 @@ namespace CoachingApp.Migrations
                     table.ForeignKey(
                         name: "FK_Excercise_coach",
                         column: x => x.coachID,
-                        principalTable: "coach",
+                        principalTable: "Coach",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "meal",
+                name: "Meal",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     description = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
-                    coachID = table.Column<int>(type: "int", nullable: true)
+                    coachID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_meal", x => x.id);
+                    table.PrimaryKey("PK_Meal", x => x.id);
                     table.ForeignKey(
                         name: "FK_meal_coach",
                         column: x => x.coachID,
-                        principalTable: "coach",
+                        principalTable: "Coach",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "nutrition_subscription",
+                name: "Nutrition_Subscription",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     duration = table.Column<int>(type: "int", nullable: true),
                     price = table.Column<int>(type: "int", nullable: true),
                     coachID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_nutrition_subscription", x => x.id);
+                    table.PrimaryKey("PK_Nutrition_Subscription", x => x.id);
                     table.ForeignKey(
                         name: "FK_nutrition_subscription_coach",
                         column: x => x.coachID,
-                        principalTable: "coach",
+                        principalTable: "Coach",
                         principalColumn: "id");
                 });
 
@@ -289,7 +296,8 @@ namespace CoachingApp.Migrations
                 name: "Workout",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     notes = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true),
                     duration = table.Column<int>(type: "int", nullable: true),
                     coachID = table.Column<int>(type: "int", nullable: true),
@@ -301,25 +309,7 @@ namespace CoachingApp.Migrations
                     table.ForeignKey(
                         name: "FK_Workout_coach",
                         column: x => x.coachID,
-                        principalTable: "coach",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Workout_Sets",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    coachID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Workout_Sets", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Workout_Sets_coach",
-                        column: x => x.coachID,
-                        principalTable: "coach",
+                        principalTable: "Coach",
                         principalColumn: "id");
                 });
 
@@ -338,44 +328,31 @@ namespace CoachingApp.Migrations
                     table.ForeignKey(
                         name: "FK_Workout_Subscription_coach",
                         column: x => x.coachID,
-                        principalTable: "coach",
+                        principalTable: "Coach",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Client_coach_Nsubscription",
+                name: "WorkoutSets",
                 columns: table => new
                 {
-                    clientID = table.Column<int>(type: "int", nullable: false),
-                    coachID = table.Column<int>(type: "int", nullable: false),
-                    subID = table.Column<int>(type: "int", nullable: false),
-                    startDate = table.Column<DateTime>(type: "date", nullable: false),
-                    accept = table.Column<bool>(type: "bit", nullable: true),
-                    rating = table.Column<int>(type: "int", nullable: true),
-                    comment = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true)
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
+                    coachID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Client_coach_Nsubscription", x => new { x.clientID, x.coachID, x.subID, x.startDate });
+                    table.PrimaryKey("PK_WorkoutSets", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Client_coach_Nsubscription_client",
-                        column: x => x.clientID,
-                        principalTable: "client",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_Client_coach_Nsubscription_coach",
+                        name: "FK_Workout_Sets_coach",
                         column: x => x.coachID,
-                        principalTable: "coach",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_Client_coach_Nsubscription_nutrition_subscription",
-                        column: x => x.subID,
-                        principalTable: "nutrition_subscription",
+                        principalTable: "Coach",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "client_meal_sub",
+                name: "Client_Meal_NSub",
                 columns: table => new
                 {
                     clientID = table.Column<int>(type: "int", nullable: false),
@@ -389,33 +366,61 @@ namespace CoachingApp.Migrations
                     table.ForeignKey(
                         name: "FK_client_meal_sub_client",
                         column: x => x.clientID,
-                        principalTable: "client",
+                        principalTable: "Client",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_client_meal_sub_meal",
                         column: x => x.mealID,
-                        principalTable: "meal",
+                        principalTable: "Meal",
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_client_meal_sub_nutrition_subscription",
                         column: x => x.subID,
-                        principalTable: "nutrition_subscription",
+                        principalTable: "Nutrition_Subscription",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "workout_excercise",
+                name: "Client_NSub",
+                columns: table => new
+                {
+                    clientID = table.Column<int>(type: "int", nullable: false),
+                    subID = table.Column<int>(type: "int", nullable: false),
+                    startDate = table.Column<DateTime>(type: "date", nullable: false),
+                    coachID = table.Column<int>(type: "int", nullable: false),
+                    accept = table.Column<bool>(type: "bit", nullable: true),
+                    rating = table.Column<int>(type: "int", nullable: true),
+                    comment = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Client_coach_Nsubscription_1", x => new { x.clientID, x.subID, x.startDate });
+                    table.ForeignKey(
+                        name: "FK_Client_coach_Nsubscription_client",
+                        column: x => x.clientID,
+                        principalTable: "Client",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Client_coach_Nsubscription_nutrition_subscription",
+                        column: x => x.subID,
+                        principalTable: "Nutrition_Subscription",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workout_Exercise",
                 columns: table => new
                 {
                     workoutID = table.Column<int>(type: "int", nullable: false),
                     excerciseID = table.Column<int>(type: "int", nullable: false),
+                    rank = table.Column<int>(type: "int", nullable: false),
                     sets = table.Column<int>(type: "int", nullable: true),
                     reps = table.Column<int>(type: "int", nullable: true),
                     notes = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_workout_excercise", x => new { x.workoutID, x.excerciseID });
+                    table.PrimaryKey("PK_workout_excercise", x => new { x.workoutID, x.excerciseID, x.rank });
                     table.ForeignKey(
                         name: "FK_workout_excercise_Excercise",
                         column: x => x.excerciseID,
@@ -429,7 +434,65 @@ namespace CoachingApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "workouts_in_sets",
+                name: "Client_Workout_WSub",
+                columns: table => new
+                {
+                    clientID = table.Column<int>(type: "int", nullable: false),
+                    workoutID = table.Column<int>(type: "int", nullable: false),
+                    subID = table.Column<int>(type: "int", nullable: false),
+                    date = table.Column<DateTime>(type: "date", nullable: false),
+                    status = table.Column<bool>(type: "bit", nullable: true),
+                    clientNotes = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_client_workout_sub", x => new { x.clientID, x.workoutID, x.subID, x.date });
+                    table.ForeignKey(
+                        name: "FK_client_workout_sub_client",
+                        column: x => x.clientID,
+                        principalTable: "Client",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_client_workout_sub_Workout",
+                        column: x => x.workoutID,
+                        principalTable: "Workout",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_client_workout_sub_Workout_Subscription",
+                        column: x => x.subID,
+                        principalTable: "Workout_Subscription",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Client_WSub",
+                columns: table => new
+                {
+                    clientID = table.Column<int>(type: "int", nullable: false),
+                    subID = table.Column<int>(type: "int", nullable: false),
+                    startDate = table.Column<DateTime>(type: "date", nullable: false),
+                    coachID = table.Column<int>(type: "int", nullable: false),
+                    accept = table.Column<bool>(type: "bit", nullable: true),
+                    rating = table.Column<int>(type: "int", nullable: true),
+                    comment = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Client_coach_WOsubscription_1", x => new { x.clientID, x.subID, x.startDate });
+                    table.ForeignKey(
+                        name: "FK_Client_coach_WOsubscription_client",
+                        column: x => x.clientID,
+                        principalTable: "Client",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Client_coach_WOsubscription_Workout_Subscription",
+                        column: x => x.subID,
+                        principalTable: "Workout_Subscription",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workout_WorkoutSets",
                 columns: table => new
                 {
                     workout_set_id = table.Column<int>(type: "int", nullable: false),
@@ -447,70 +510,7 @@ namespace CoachingApp.Migrations
                     table.ForeignKey(
                         name: "FK_workouts_in_sets_Workout_Sets",
                         column: x => x.workout_set_id,
-                        principalTable: "Workout_Sets",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Client_coach_WOsubscription",
-                columns: table => new
-                {
-                    clientID = table.Column<int>(type: "int", nullable: false),
-                    coachID = table.Column<int>(type: "int", nullable: false),
-                    subID = table.Column<int>(type: "int", nullable: false),
-                    startDate = table.Column<DateTime>(type: "date", nullable: false),
-                    accept = table.Column<bool>(type: "bit", nullable: true),
-                    rating = table.Column<int>(type: "int", nullable: true),
-                    comment = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Client_coach_WOsubscription", x => new { x.clientID, x.coachID, x.subID, x.startDate });
-                    table.ForeignKey(
-                        name: "FK_Client_coach_WOsubscription_client",
-                        column: x => x.clientID,
-                        principalTable: "client",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_Client_coach_WOsubscription_coach",
-                        column: x => x.coachID,
-                        principalTable: "coach",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_Client_coach_WOsubscription_Workout_Subscription",
-                        column: x => x.subID,
-                        principalTable: "Workout_Subscription",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "client_workout_sub",
-                columns: table => new
-                {
-                    clientID = table.Column<int>(type: "int", nullable: false),
-                    workoutID = table.Column<int>(type: "int", nullable: false),
-                    subID = table.Column<int>(type: "int", nullable: false),
-                    date = table.Column<DateTime>(type: "date", nullable: false),
-                    status = table.Column<bool>(type: "bit", nullable: true),
-                    clientNotes = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_client_workout_sub", x => new { x.clientID, x.workoutID, x.subID, x.date });
-                    table.ForeignKey(
-                        name: "FK_client_workout_sub_client",
-                        column: x => x.clientID,
-                        principalTable: "client",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_client_workout_sub_Workout",
-                        column: x => x.workoutID,
-                        principalTable: "Workout",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_client_workout_sub_Workout_Subscription",
-                        column: x => x.subID,
-                        principalTable: "Workout_Subscription",
+                        principalTable: "WorkoutSets",
                         principalColumn: "id");
                 });
 
@@ -554,63 +554,51 @@ namespace CoachingApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_certificates_coachID",
-                table: "certificates",
+                name: "IX_Certificates_coachID",
+                table: "Certificates",
                 column: "coachID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_client_UserId",
-                table: "client",
-                column: "UserId",
-                unique: true,
-                filter: "[UserId] IS NOT NULL");
+                name: "IX_Client_userId",
+                table: "Client",
+                column: "userId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Client_coach_Nsubscription_coachID",
-                table: "Client_coach_Nsubscription",
-                column: "coachID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Client_coach_Nsubscription_subID",
-                table: "Client_coach_Nsubscription",
-                column: "subID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Client_coach_WOsubscription_coachID",
-                table: "Client_coach_WOsubscription",
-                column: "coachID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Client_coach_WOsubscription_subID",
-                table: "Client_coach_WOsubscription",
-                column: "subID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_client_meal_sub_mealID",
-                table: "client_meal_sub",
+                name: "IX_Client_Meal_NSub_mealID",
+                table: "Client_Meal_NSub",
                 column: "mealID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_client_meal_sub_subID",
-                table: "client_meal_sub",
+                name: "IX_Client_Meal_NSub_subID",
+                table: "Client_Meal_NSub",
                 column: "subID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_client_workout_sub_subID",
-                table: "client_workout_sub",
+                name: "IX_Client_NSub_subID",
+                table: "Client_NSub",
                 column: "subID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_client_workout_sub_workoutID",
-                table: "client_workout_sub",
+                name: "IX_Client_Workout_WSub_subID",
+                table: "Client_Workout_WSub",
+                column: "subID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Client_Workout_WSub_workoutID",
+                table: "Client_Workout_WSub",
                 column: "workoutID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_coach_UserId",
-                table: "coach",
-                column: "UserId",
-                unique: true,
-                filter: "[UserId] IS NOT NULL");
+                name: "IX_Client_WSub_subID",
+                table: "Client_WSub",
+                column: "subID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Coach_userId",
+                table: "Coach",
+                column: "userId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Excercise_coachID",
@@ -618,13 +606,13 @@ namespace CoachingApp.Migrations
                 column: "coachID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_meal_coachID",
-                table: "meal",
+                name: "IX_Meal_coachID",
+                table: "Meal",
                 column: "coachID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_nutrition_subscription_coachID",
-                table: "nutrition_subscription",
+                name: "IX_Nutrition_Subscription_coachID",
+                table: "Nutrition_Subscription",
                 column: "coachID");
 
             migrationBuilder.CreateIndex(
@@ -633,14 +621,9 @@ namespace CoachingApp.Migrations
                 column: "coachID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_workout_excercise_excerciseID",
-                table: "workout_excercise",
+                name: "IX_Workout_Exercise_excerciseID",
+                table: "Workout_Exercise",
                 column: "excerciseID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Workout_Sets_coachID",
-                table: "Workout_Sets",
-                column: "coachID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Workout_Subscription_coachID",
@@ -648,9 +631,14 @@ namespace CoachingApp.Migrations
                 column: "coachID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_workouts_in_sets_workoutID",
-                table: "workouts_in_sets",
+                name: "IX_Workout_WorkoutSets_workoutID",
+                table: "Workout_WorkoutSets",
                 column: "workoutID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkoutSets_coachID",
+                table: "WorkoutSets",
+                column: "coachID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -671,37 +659,37 @@ namespace CoachingApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "certificates");
+                name: "Certificates");
 
             migrationBuilder.DropTable(
-                name: "Client_coach_Nsubscription");
+                name: "Client_Meal_NSub");
 
             migrationBuilder.DropTable(
-                name: "Client_coach_WOsubscription");
+                name: "Client_NSub");
 
             migrationBuilder.DropTable(
-                name: "client_meal_sub");
+                name: "Client_Workout_WSub");
 
             migrationBuilder.DropTable(
-                name: "client_workout_sub");
+                name: "Client_WSub");
 
             migrationBuilder.DropTable(
-                name: "workout_excercise");
+                name: "Workout_Exercise");
 
             migrationBuilder.DropTable(
-                name: "workouts_in_sets");
+                name: "Workout_WorkoutSets");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "meal");
+                name: "Meal");
 
             migrationBuilder.DropTable(
-                name: "nutrition_subscription");
+                name: "Nutrition_Subscription");
 
             migrationBuilder.DropTable(
-                name: "client");
+                name: "Client");
 
             migrationBuilder.DropTable(
                 name: "Workout_Subscription");
@@ -713,10 +701,10 @@ namespace CoachingApp.Migrations
                 name: "Workout");
 
             migrationBuilder.DropTable(
-                name: "Workout_Sets");
+                name: "WorkoutSets");
 
             migrationBuilder.DropTable(
-                name: "coach");
+                name: "Coach");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

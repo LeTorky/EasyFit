@@ -13,7 +13,7 @@ namespace CoachingApp.Models
     {
         public Excercise()
         {
-            workout_excercises = new HashSet<workout_excercise>();
+            Workout_Exercises = new HashSet<Workout_Exercise>();
         }
 
         [Key]
@@ -21,15 +21,15 @@ namespace CoachingApp.Models
         [StringLength(200)]
         [Unicode(false)]
         public string description { get; set; }
-        [StringLength(150)]
+        [StringLength(200)]
         [Unicode(false)]
         public string link { get; set; }
-        public int? coachID { get; set; }
+        public int coachID { get; set; }
 
         [ForeignKey("coachID")]
         [InverseProperty("Excercises")]
-        public virtual coach coach { get; set; }
+        public virtual Coach coach { get; set; }
         [InverseProperty("excercise")]
-        public virtual ICollection<workout_excercise> workout_excercises { get; set; }
+        public virtual ICollection<Workout_Exercise> Workout_Exercises { get; set; }
     }
 }

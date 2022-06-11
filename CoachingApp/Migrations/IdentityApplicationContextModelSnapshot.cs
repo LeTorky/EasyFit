@@ -22,10 +22,39 @@ namespace CoachingApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("CoachingApp.Identity.IdentityApplicationRoles", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
             modelBuilder.Entity("CoachingApp.Identity.IdentityApplicationUser", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -87,7 +116,7 @@ namespace CoachingApp.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.certificate", b =>
+            modelBuilder.Entity("CoachingApp.Models.Certificate", b =>
                 {
                     b.Property<string>("name")
                         .HasMaxLength(50)
@@ -102,20 +131,21 @@ namespace CoachingApp.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(30)");
 
-                    b.HasKey("name", "coachID");
+                    b.HasKey("name", "coachID")
+                        .HasName("PK_certificates");
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("certificates");
+                    b.ToTable("Certificates");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.client", b =>
+            modelBuilder.Entity("CoachingApp.Models.Client", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<int>("age")
                         .HasColumnType("int");
@@ -156,85 +186,21 @@ namespace CoachingApp.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<Guid>("userId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<double?>("weight")
                         .HasColumnType("float");
 
                     b.HasKey("id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("userId")
+                        .IsUnique();
 
-                    b.ToTable("client");
+                    b.ToTable("Client");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.Client_coach_Nsubscription", b =>
-                {
-                    b.Property<int>("clientID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("coachID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("subID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("startDate")
-                        .HasColumnType("date");
-
-                    b.Property<bool?>("accept")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("comment")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
-
-                    b.Property<int?>("rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("clientID", "coachID", "subID", "startDate");
-
-                    b.HasIndex("coachID");
-
-                    b.HasIndex("subID");
-
-                    b.ToTable("Client_coach_Nsubscription");
-                });
-
-            modelBuilder.Entity("CoachingApp.Models.Client_coach_WOsubscription", b =>
-                {
-                    b.Property<int>("clientID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("coachID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("subID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("startDate")
-                        .HasColumnType("date");
-
-                    b.Property<bool?>("accept")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("comment")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
-
-                    b.Property<int?>("rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("clientID", "coachID", "subID", "startDate");
-
-                    b.HasIndex("coachID");
-
-                    b.HasIndex("subID");
-
-                    b.ToTable("Client_coach_WOsubscription");
-                });
-
-            modelBuilder.Entity("CoachingApp.Models.client_meal_sub", b =>
+            modelBuilder.Entity("CoachingApp.Models.Client_Meal_NSub", b =>
                 {
                     b.Property<int>("clientID")
                         .HasColumnType("int");
@@ -248,16 +214,49 @@ namespace CoachingApp.Migrations
                     b.Property<DateTime>("date")
                         .HasColumnType("date");
 
-                    b.HasKey("clientID", "mealID", "subID", "date");
+                    b.HasKey("clientID", "mealID", "subID", "date")
+                        .HasName("PK_client_meal_sub");
 
                     b.HasIndex("mealID");
 
                     b.HasIndex("subID");
 
-                    b.ToTable("client_meal_sub");
+                    b.ToTable("Client_Meal_NSub");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.client_workout_sub", b =>
+            modelBuilder.Entity("CoachingApp.Models.Client_NSub", b =>
+                {
+                    b.Property<int>("clientID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("subID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("startDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool?>("accept")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("coachID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("comment")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)");
+
+                    b.Property<int?>("rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("clientID", "subID", "startDate")
+                        .HasName("PK_Client_coach_Nsubscription_1");
+
+                    b.HasIndex("subID");
+
+                    b.ToTable("Client_NSub");
+                });
+
+            modelBuilder.Entity("CoachingApp.Models.Client_Workout_WSub", b =>
                 {
                     b.Property<int>("clientID")
                         .HasColumnType("int");
@@ -279,25 +278,58 @@ namespace CoachingApp.Migrations
                     b.Property<bool?>("status")
                         .HasColumnType("bit");
 
-                    b.HasKey("clientID", "workoutID", "subID", "date");
+                    b.HasKey("clientID", "workoutID", "subID", "date")
+                        .HasName("PK_client_workout_sub");
 
                     b.HasIndex("subID");
 
                     b.HasIndex("workoutID");
 
-                    b.ToTable("client_workout_sub");
+                    b.ToTable("Client_Workout_WSub");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.coach", b =>
+            modelBuilder.Entity("CoachingApp.Models.Client_WSub", b =>
+                {
+                    b.Property<int>("clientID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("subID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("startDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool?>("accept")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("coachID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("comment")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)");
+
+                    b.Property<int?>("rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("clientID", "subID", "startDate")
+                        .HasName("PK_Client_coach_WOsubscription_1");
+
+                    b.HasIndex("subID");
+
+                    b.ToTable("Client_WSub");
+                });
+
+            modelBuilder.Entity("CoachingApp.Models.Coach", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<int?>("NumberOfRating")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("age")
                         .HasColumnType("int");
@@ -341,24 +373,29 @@ namespace CoachingApp.Migrations
                     b.Property<double?>("rating")
                         .HasColumnType("float");
 
+                    b.Property<Guid>("userId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int?>("yearsExperience")
                         .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("userId")
+                        .IsUnique();
 
-                    b.ToTable("coach");
+                    b.ToTable("Coach");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Excercise", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("coachID")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<int>("coachID")
                         .HasColumnType("int");
 
                     b.Property<string>("description")
@@ -367,9 +404,9 @@ namespace CoachingApp.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<string>("link")
-                        .HasMaxLength(150)
+                        .HasMaxLength(200)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(200)");
 
                     b.HasKey("id");
 
@@ -378,12 +415,15 @@ namespace CoachingApp.Migrations
                     b.ToTable("Excercise");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.meal", b =>
+            modelBuilder.Entity("CoachingApp.Models.Meal", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("coachID")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<int>("coachID")
                         .HasColumnType("int");
 
                     b.Property<string>("description")
@@ -395,13 +435,16 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("meal");
+                    b.ToTable("Meal");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.nutrition_subscription", b =>
+            modelBuilder.Entity("CoachingApp.Models.Nutrition_Subscription", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<int?>("coachID")
                         .HasColumnType("int");
@@ -416,13 +459,16 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("nutrition_subscription");
+                    b.ToTable("Nutrition_Subscription");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout", b =>
                 {
                     b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<int?>("coachID")
                         .HasColumnType("int");
@@ -447,12 +493,15 @@ namespace CoachingApp.Migrations
                     b.ToTable("Workout");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.workout_excercise", b =>
+            modelBuilder.Entity("CoachingApp.Models.Workout_Exercise", b =>
                 {
                     b.Property<int>("workoutID")
                         .HasColumnType("int");
 
                     b.Property<int>("excerciseID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("rank")
                         .HasColumnType("int");
 
                     b.Property<string>("notes")
@@ -466,31 +515,12 @@ namespace CoachingApp.Migrations
                     b.Property<int?>("sets")
                         .HasColumnType("int");
 
-                    b.HasKey("workoutID", "excerciseID");
+                    b.HasKey("workoutID", "excerciseID", "rank")
+                        .HasName("PK_workout_excercise");
 
                     b.HasIndex("excerciseID");
 
-                    b.ToTable("workout_excercise");
-                });
-
-            modelBuilder.Entity("CoachingApp.Models.Workout_Set", b =>
-                {
-                    b.Property<int>("id")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("coachID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("name")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("coachID");
-
-                    b.ToTable("Workout_Sets");
+                    b.ToTable("Workout_Exercise");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout_Subscription", b =>
@@ -514,7 +544,7 @@ namespace CoachingApp.Migrations
                     b.ToTable("Workout_Subscription");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.workouts_in_set", b =>
+            modelBuilder.Entity("CoachingApp.Models.Workout_WorkoutSet", b =>
                 {
                     b.Property<int>("workout_set_id")
                         .HasColumnType("int");
@@ -530,37 +560,33 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("workoutID");
 
-                    b.ToTable("workouts_in_sets");
+                    b.ToTable("Workout_WorkoutSets");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+            modelBuilder.Entity("CoachingApp.Models.WorkoutSet", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<int?>("coachID")
+                        .HasColumnType("int");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("name")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                    b.HasIndex("coachID");
 
-                    b.ToTable("AspNetRoles", (string)null);
+                    b.ToTable("WorkoutSets");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -574,9 +600,8 @@ namespace CoachingApp.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -585,7 +610,7 @@ namespace CoachingApp.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -599,9 +624,8 @@ namespace CoachingApp.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -610,7 +634,7 @@ namespace CoachingApp.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -621,9 +645,8 @@ namespace CoachingApp.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -632,13 +655,13 @@ namespace CoachingApp.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -647,10 +670,10 @@ namespace CoachingApp.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -666,10 +689,10 @@ namespace CoachingApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.certificate", b =>
+            modelBuilder.Entity("CoachingApp.Models.Certificate", b =>
                 {
-                    b.HasOne("CoachingApp.Models.coach", "coach")
-                        .WithMany("certificates")
+                    b.HasOne("CoachingApp.Models.Coach", "coach")
+                        .WithMany("Certificates")
                         .HasForeignKey("coachID")
                         .IsRequired()
                         .HasConstraintName("FK_certificates_coach");
@@ -677,85 +700,33 @@ namespace CoachingApp.Migrations
                     b.Navigation("coach");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.client", b =>
+            modelBuilder.Entity("CoachingApp.Models.Client", b =>
                 {
                     b.HasOne("CoachingApp.Identity.IdentityApplicationUser", "User")
                         .WithOne("Client")
-                        .HasForeignKey("CoachingApp.Models.client", "UserId");
+                        .HasForeignKey("CoachingApp.Models.Client", "userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.Client_coach_Nsubscription", b =>
+            modelBuilder.Entity("CoachingApp.Models.Client_Meal_NSub", b =>
                 {
-                    b.HasOne("CoachingApp.Models.client", "client")
-                        .WithMany("Client_coach_Nsubscriptions")
-                        .HasForeignKey("clientID")
-                        .IsRequired()
-                        .HasConstraintName("FK_Client_coach_Nsubscription_client");
-
-                    b.HasOne("CoachingApp.Models.coach", "coach")
-                        .WithMany("Client_coach_Nsubscriptions")
-                        .HasForeignKey("coachID")
-                        .IsRequired()
-                        .HasConstraintName("FK_Client_coach_Nsubscription_coach");
-
-                    b.HasOne("CoachingApp.Models.nutrition_subscription", "sub")
-                        .WithMany("Client_coach_Nsubscriptions")
-                        .HasForeignKey("subID")
-                        .IsRequired()
-                        .HasConstraintName("FK_Client_coach_Nsubscription_nutrition_subscription");
-
-                    b.Navigation("client");
-
-                    b.Navigation("coach");
-
-                    b.Navigation("sub");
-                });
-
-            modelBuilder.Entity("CoachingApp.Models.Client_coach_WOsubscription", b =>
-                {
-                    b.HasOne("CoachingApp.Models.client", "client")
-                        .WithMany("Client_coach_WOsubscriptions")
-                        .HasForeignKey("clientID")
-                        .IsRequired()
-                        .HasConstraintName("FK_Client_coach_WOsubscription_client");
-
-                    b.HasOne("CoachingApp.Models.coach", "coach")
-                        .WithMany("Client_coach_WOsubscriptions")
-                        .HasForeignKey("coachID")
-                        .IsRequired()
-                        .HasConstraintName("FK_Client_coach_WOsubscription_coach");
-
-                    b.HasOne("CoachingApp.Models.Workout_Subscription", "sub")
-                        .WithMany("Client_coach_WOsubscriptions")
-                        .HasForeignKey("subID")
-                        .IsRequired()
-                        .HasConstraintName("FK_Client_coach_WOsubscription_Workout_Subscription");
-
-                    b.Navigation("client");
-
-                    b.Navigation("coach");
-
-                    b.Navigation("sub");
-                });
-
-            modelBuilder.Entity("CoachingApp.Models.client_meal_sub", b =>
-                {
-                    b.HasOne("CoachingApp.Models.client", "client")
-                        .WithMany("client_meal_subs")
+                    b.HasOne("CoachingApp.Models.Client", "client")
+                        .WithMany("Client_Meal_NSubs")
                         .HasForeignKey("clientID")
                         .IsRequired()
                         .HasConstraintName("FK_client_meal_sub_client");
 
-                    b.HasOne("CoachingApp.Models.meal", "meal")
-                        .WithMany("client_meal_subs")
+                    b.HasOne("CoachingApp.Models.Meal", "meal")
+                        .WithMany("Client_Meal_NSubs")
                         .HasForeignKey("mealID")
                         .IsRequired()
                         .HasConstraintName("FK_client_meal_sub_meal");
 
-                    b.HasOne("CoachingApp.Models.nutrition_subscription", "sub")
-                        .WithMany("client_meal_subs")
+                    b.HasOne("CoachingApp.Models.Nutrition_Subscription", "sub")
+                        .WithMany("Client_Meal_NSubs")
                         .HasForeignKey("subID")
                         .IsRequired()
                         .HasConstraintName("FK_client_meal_sub_nutrition_subscription");
@@ -767,22 +738,41 @@ namespace CoachingApp.Migrations
                     b.Navigation("sub");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.client_workout_sub", b =>
+            modelBuilder.Entity("CoachingApp.Models.Client_NSub", b =>
                 {
-                    b.HasOne("CoachingApp.Models.client", "client")
-                        .WithMany("client_workout_subs")
+                    b.HasOne("CoachingApp.Models.Client", "client")
+                        .WithMany("Client_NSubs")
+                        .HasForeignKey("clientID")
+                        .IsRequired()
+                        .HasConstraintName("FK_Client_coach_Nsubscription_client");
+
+                    b.HasOne("CoachingApp.Models.Nutrition_Subscription", "sub")
+                        .WithMany("Client_NSubs")
+                        .HasForeignKey("subID")
+                        .IsRequired()
+                        .HasConstraintName("FK_Client_coach_Nsubscription_nutrition_subscription");
+
+                    b.Navigation("client");
+
+                    b.Navigation("sub");
+                });
+
+            modelBuilder.Entity("CoachingApp.Models.Client_Workout_WSub", b =>
+                {
+                    b.HasOne("CoachingApp.Models.Client", "client")
+                        .WithMany("Client_Workout_WSubs")
                         .HasForeignKey("clientID")
                         .IsRequired()
                         .HasConstraintName("FK_client_workout_sub_client");
 
                     b.HasOne("CoachingApp.Models.Workout_Subscription", "sub")
-                        .WithMany("client_workout_subs")
+                        .WithMany("Client_Workout_WSubs")
                         .HasForeignKey("subID")
                         .IsRequired()
                         .HasConstraintName("FK_client_workout_sub_Workout_Subscription");
 
                     b.HasOne("CoachingApp.Models.Workout", "workout")
-                        .WithMany("client_workout_subs")
+                        .WithMany("Client_Workout_WSubs")
                         .HasForeignKey("workoutID")
                         .IsRequired()
                         .HasConstraintName("FK_client_workout_sub_Workout");
@@ -794,39 +784,62 @@ namespace CoachingApp.Migrations
                     b.Navigation("workout");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.coach", b =>
+            modelBuilder.Entity("CoachingApp.Models.Client_WSub", b =>
+                {
+                    b.HasOne("CoachingApp.Models.Client", "client")
+                        .WithMany("Client_WSubs")
+                        .HasForeignKey("clientID")
+                        .IsRequired()
+                        .HasConstraintName("FK_Client_coach_WOsubscription_client");
+
+                    b.HasOne("CoachingApp.Models.Workout_Subscription", "sub")
+                        .WithMany("Client_WSubs")
+                        .HasForeignKey("subID")
+                        .IsRequired()
+                        .HasConstraintName("FK_Client_coach_WOsubscription_Workout_Subscription");
+
+                    b.Navigation("client");
+
+                    b.Navigation("sub");
+                });
+
+            modelBuilder.Entity("CoachingApp.Models.Coach", b =>
                 {
                     b.HasOne("CoachingApp.Identity.IdentityApplicationUser", "User")
-                        .WithOne("Coaches")
-                        .HasForeignKey("CoachingApp.Models.coach", "UserId");
+                        .WithOne("Coach")
+                        .HasForeignKey("CoachingApp.Models.Coach", "userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Excercise", b =>
                 {
-                    b.HasOne("CoachingApp.Models.coach", "coach")
+                    b.HasOne("CoachingApp.Models.Coach", "coach")
                         .WithMany("Excercises")
                         .HasForeignKey("coachID")
+                        .IsRequired()
                         .HasConstraintName("FK_Excercise_coach");
 
                     b.Navigation("coach");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.meal", b =>
+            modelBuilder.Entity("CoachingApp.Models.Meal", b =>
                 {
-                    b.HasOne("CoachingApp.Models.coach", "coach")
-                        .WithMany("meals")
+                    b.HasOne("CoachingApp.Models.Coach", "coach")
+                        .WithMany("Meals")
                         .HasForeignKey("coachID")
+                        .IsRequired()
                         .HasConstraintName("FK_meal_coach");
 
                     b.Navigation("coach");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.nutrition_subscription", b =>
+            modelBuilder.Entity("CoachingApp.Models.Nutrition_Subscription", b =>
                 {
-                    b.HasOne("CoachingApp.Models.coach", "coach")
-                        .WithMany("nutrition_subscriptions")
+                    b.HasOne("CoachingApp.Models.Coach", "coach")
+                        .WithMany("Nutrition_Subscriptions")
                         .HasForeignKey("coachID")
                         .HasConstraintName("FK_nutrition_subscription_coach");
 
@@ -835,7 +848,7 @@ namespace CoachingApp.Migrations
 
             modelBuilder.Entity("CoachingApp.Models.Workout", b =>
                 {
-                    b.HasOne("CoachingApp.Models.coach", "coach")
+                    b.HasOne("CoachingApp.Models.Coach", "coach")
                         .WithMany("Workouts")
                         .HasForeignKey("coachID")
                         .HasConstraintName("FK_Workout_coach");
@@ -843,16 +856,16 @@ namespace CoachingApp.Migrations
                     b.Navigation("coach");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.workout_excercise", b =>
+            modelBuilder.Entity("CoachingApp.Models.Workout_Exercise", b =>
                 {
                     b.HasOne("CoachingApp.Models.Excercise", "excercise")
-                        .WithMany("workout_excercises")
+                        .WithMany("Workout_Exercises")
                         .HasForeignKey("excerciseID")
                         .IsRequired()
                         .HasConstraintName("FK_workout_excercise_Excercise");
 
                     b.HasOne("CoachingApp.Models.Workout", "workout")
-                        .WithMany("workout_excercises")
+                        .WithMany("Workout_Exercises")
                         .HasForeignKey("workoutID")
                         .IsRequired()
                         .HasConstraintName("FK_workout_excercise_Workout");
@@ -862,19 +875,9 @@ namespace CoachingApp.Migrations
                     b.Navigation("workout");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.Workout_Set", b =>
-                {
-                    b.HasOne("CoachingApp.Models.coach", "coach")
-                        .WithMany("Workout_Sets")
-                        .HasForeignKey("coachID")
-                        .HasConstraintName("FK_Workout_Sets_coach");
-
-                    b.Navigation("coach");
-                });
-
             modelBuilder.Entity("CoachingApp.Models.Workout_Subscription", b =>
                 {
-                    b.HasOne("CoachingApp.Models.coach", "coach")
+                    b.HasOne("CoachingApp.Models.Coach", "coach")
                         .WithMany("Workout_Subscriptions")
                         .HasForeignKey("coachID")
                         .HasConstraintName("FK_Workout_Subscription_coach");
@@ -882,16 +885,16 @@ namespace CoachingApp.Migrations
                     b.Navigation("coach");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.workouts_in_set", b =>
+            modelBuilder.Entity("CoachingApp.Models.Workout_WorkoutSet", b =>
                 {
                     b.HasOne("CoachingApp.Models.Workout", "workout")
-                        .WithMany("workouts_in_sets")
+                        .WithMany("Workout_WorkoutSets")
                         .HasForeignKey("workoutID")
                         .IsRequired()
                         .HasConstraintName("FK_workouts_in_sets_Workout");
 
-                    b.HasOne("CoachingApp.Models.Workout_Set", "workout_set")
-                        .WithMany("workouts_in_sets")
+                    b.HasOne("CoachingApp.Models.WorkoutSet", "workout_set")
+                        .WithMany("Workout_WorkoutSets")
                         .HasForeignKey("workout_set_id")
                         .IsRequired()
                         .HasConstraintName("FK_workouts_in_sets_Workout_Sets");
@@ -901,16 +904,26 @@ namespace CoachingApp.Migrations
                     b.Navigation("workout_set");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("CoachingApp.Models.WorkoutSet", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("CoachingApp.Models.Coach", "coach")
+                        .WithMany("WorkoutSets")
+                        .HasForeignKey("coachID")
+                        .HasConstraintName("FK_Workout_Sets_coach");
+
+                    b.Navigation("coach");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("CoachingApp.Identity.IdentityApplicationRoles", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("CoachingApp.Identity.IdentityApplicationUser", null)
                         .WithMany()
@@ -919,7 +932,7 @@ namespace CoachingApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("CoachingApp.Identity.IdentityApplicationUser", null)
                         .WithMany()
@@ -928,9 +941,9 @@ namespace CoachingApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("CoachingApp.Identity.IdentityApplicationRoles", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -943,7 +956,7 @@ namespace CoachingApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("CoachingApp.Identity.IdentityApplicationUser", null)
                         .WithMany()
@@ -956,77 +969,73 @@ namespace CoachingApp.Migrations
                 {
                     b.Navigation("Client");
 
-                    b.Navigation("Coaches");
+                    b.Navigation("Coach");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.client", b =>
+            modelBuilder.Entity("CoachingApp.Models.Client", b =>
                 {
-                    b.Navigation("Client_coach_Nsubscriptions");
+                    b.Navigation("Client_Meal_NSubs");
 
-                    b.Navigation("Client_coach_WOsubscriptions");
+                    b.Navigation("Client_NSubs");
 
-                    b.Navigation("client_meal_subs");
+                    b.Navigation("Client_WSubs");
 
-                    b.Navigation("client_workout_subs");
+                    b.Navigation("Client_Workout_WSubs");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.coach", b =>
+            modelBuilder.Entity("CoachingApp.Models.Coach", b =>
                 {
-                    b.Navigation("Client_coach_Nsubscriptions");
-
-                    b.Navigation("Client_coach_WOsubscriptions");
+                    b.Navigation("Certificates");
 
                     b.Navigation("Excercises");
 
-                    b.Navigation("Workout_Sets");
+                    b.Navigation("Meals");
+
+                    b.Navigation("Nutrition_Subscriptions");
+
+                    b.Navigation("WorkoutSets");
 
                     b.Navigation("Workout_Subscriptions");
 
                     b.Navigation("Workouts");
-
-                    b.Navigation("certificates");
-
-                    b.Navigation("meals");
-
-                    b.Navigation("nutrition_subscriptions");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Excercise", b =>
                 {
-                    b.Navigation("workout_excercises");
+                    b.Navigation("Workout_Exercises");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.meal", b =>
+            modelBuilder.Entity("CoachingApp.Models.Meal", b =>
                 {
-                    b.Navigation("client_meal_subs");
+                    b.Navigation("Client_Meal_NSubs");
                 });
 
-            modelBuilder.Entity("CoachingApp.Models.nutrition_subscription", b =>
+            modelBuilder.Entity("CoachingApp.Models.Nutrition_Subscription", b =>
                 {
-                    b.Navigation("Client_coach_Nsubscriptions");
+                    b.Navigation("Client_Meal_NSubs");
 
-                    b.Navigation("client_meal_subs");
+                    b.Navigation("Client_NSubs");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout", b =>
                 {
-                    b.Navigation("client_workout_subs");
+                    b.Navigation("Client_Workout_WSubs");
 
-                    b.Navigation("workout_excercises");
+                    b.Navigation("Workout_Exercises");
 
-                    b.Navigation("workouts_in_sets");
-                });
-
-            modelBuilder.Entity("CoachingApp.Models.Workout_Set", b =>
-                {
-                    b.Navigation("workouts_in_sets");
+                    b.Navigation("Workout_WorkoutSets");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout_Subscription", b =>
                 {
-                    b.Navigation("Client_coach_WOsubscriptions");
+                    b.Navigation("Client_WSubs");
 
-                    b.Navigation("client_workout_subs");
+                    b.Navigation("Client_Workout_WSubs");
+                });
+
+            modelBuilder.Entity("CoachingApp.Models.WorkoutSet", b =>
+                {
+                    b.Navigation("Workout_WorkoutSets");
                 });
 #pragma warning restore 612, 618
         }

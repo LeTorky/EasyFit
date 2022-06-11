@@ -8,12 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    [Table("Client_coach_Nsubscription")]
-    public partial class Client_coach_Nsubscription
+    [Table("Client_WSub")]
+    public partial class Client_WSub
     {
         [Key]
         public int clientID { get; set; }
-        [Key]
         public int coachID { get; set; }
         [Key]
         public int subID { get; set; }
@@ -26,13 +25,10 @@ namespace CoachingApp.Models
         public string comment { get; set; }
 
         [ForeignKey("clientID")]
-        [InverseProperty("Client_coach_Nsubscriptions")]
-        public virtual client client { get; set; }
-        [ForeignKey("coachID")]
-        [InverseProperty("Client_coach_Nsubscriptions")]
-        public virtual coach coach { get; set; }
+        [InverseProperty("Client_WSubs")]
+        public virtual Client client { get; set; }
         [ForeignKey("subID")]
-        [InverseProperty("Client_coach_Nsubscriptions")]
-        public virtual nutrition_subscription sub { get; set; }
+        [InverseProperty("Client_WSubs")]
+        public virtual Workout_Subscription sub { get; set; }
     }
 }

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    [Table("workout_excercise")]
-    public partial class workout_excercise
+    [Table("Workout_Exercise")]
+    public partial class Workout_Exercise
     {
         [Key]
         public int workoutID { get; set; }
@@ -20,12 +20,14 @@ namespace CoachingApp.Models
         [StringLength(200)]
         [Unicode(false)]
         public string notes { get; set; }
+        [Key]
+        public int rank { get; set; }
 
         [ForeignKey("excerciseID")]
-        [InverseProperty("workout_excercises")]
+        [InverseProperty("Workout_Exercises")]
         public virtual Excercise excercise { get; set; }
         [ForeignKey("workoutID")]
-        [InverseProperty("workout_excercises")]
+        [InverseProperty("Workout_Exercises")]
         public virtual Workout workout { get; set; }
     }
 }

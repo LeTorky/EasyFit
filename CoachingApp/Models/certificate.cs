@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    public partial class certificate
+    public partial class Certificate
     {
         [Key]
         [StringLength(50)]
@@ -21,7 +21,7 @@ namespace CoachingApp.Models
         public int coachID { get; set; }
 
         [ForeignKey("coachID")]
-        [InverseProperty("certificates")]
-        public virtual coach coach { get; set; }
+        [InverseProperty("Certificates")]
+        public virtual Coach coach { get; set; }
     }
 }

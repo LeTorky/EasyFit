@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Models
 {
-    [Table("nutrition_subscription")]
-    public partial class nutrition_subscription
+    [Table("Nutrition_Subscription")]
+    public partial class Nutrition_Subscription
     {
-        public nutrition_subscription()
+        public Nutrition_Subscription()
         {
-            Client_coach_Nsubscriptions = new HashSet<Client_coach_Nsubscription>();
-            client_meal_subs = new HashSet<client_meal_sub>();
+            Client_Meal_NSubs = new HashSet<Client_Meal_NSub>();
+            Client_NSubs = new HashSet<Client_NSub>();
         }
 
         [Key]
@@ -24,11 +24,11 @@ namespace CoachingApp.Models
         public int? coachID { get; set; }
 
         [ForeignKey("coachID")]
-        [InverseProperty("nutrition_subscriptions")]
-        public virtual coach coach { get; set; }
+        [InverseProperty("Nutrition_Subscriptions")]
+        public virtual Coach coach { get; set; }
         [InverseProperty("sub")]
-        public virtual ICollection<Client_coach_Nsubscription> Client_coach_Nsubscriptions { get; set; }
+        public virtual ICollection<Client_Meal_NSub> Client_Meal_NSubs { get; set; }
         [InverseProperty("sub")]
-        public virtual ICollection<client_meal_sub> client_meal_subs { get; set; }
+        public virtual ICollection<Client_NSub> Client_NSubs { get; set; }
     }
 }

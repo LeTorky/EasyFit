@@ -16,9 +16,8 @@ namespace CoachingApp.Implementations
         }
         public async Task<ActionResult> TestMethod()
         {
-
-            Console.WriteLine(DBContext.Users.FirstOrDefault().Client.age);
-            return new OkResult();
+            var Result = new OkObjectResult(DBContext.Users.FirstOrDefault().Client.age);
+            return Result;
         }
     }
 }

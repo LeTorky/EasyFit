@@ -15,7 +15,7 @@ builder.Services.AddDbContext<IdentityApplicationContext>(optionsAction => // DB
 {
     optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConneciton")); // Fetches connection string.
 });
-builder.Services.AddIdentity<IdentityApplicationUser, IdentityRole>(setupAction => // Identity DI.
+builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(setupAction => // Identity DI.
 {
     SignInOptions SignInOpt = new SignInOptions();
     SignInOpt.RequireConfirmedPhoneNumber = false;
@@ -26,6 +26,14 @@ builder.Services.AddIdentity<IdentityApplicationUser, IdentityRole>(setupAction 
 
 // Injecting dependancies.
 builder.Services.AddTransient<ITest, Test>();
+builder.Services.AddTransient<ICoachManager, CoachManager>();
+builder.Services.AddTransient<IClientManager, ClientManager>();
+builder.Services.AddTransient<IExerciseManager, ExerciseManager>();
+builder.Services.AddTransient<IWorkoutManager, WorkoutManager>();
+builder.Services.AddTransient<IWorkoutSetsManager, WorkoutSetsManager>();
+builder.Services.AddTransient<IMealManager, MealManager>();
+builder.Services.AddTransient<IWSubscriptionManager, WSubscriptionManager>();
+builder.Services.AddTransient<INSubscriptionManager, NSubscriptionManager>();
 
 // Swagger API documentation.
 builder.Services.AddEndpointsApiExplorer();

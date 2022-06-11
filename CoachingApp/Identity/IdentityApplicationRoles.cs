@@ -2,7 +2,7 @@
 
 namespace CoachingApp.Identity
 {
-    public class IdentityApplicationRoles:IdentityRole
+    public class IdentityApplicationRoles:IdentityRole<Guid>
     {
     }
 }

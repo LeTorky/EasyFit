@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CoachingApp.Identity
 {
-    public class IdentityApplicationUser:IdentityUser
+    public class IdentityApplicationUser:IdentityUser<Guid>
     {
-        public virtual client? Client { get; set; }
-        public virtual coach? Coaches { get; set; }
+        public virtual Client? Client { get; set; }
+        public virtual Coach? Coach { get; set; }
 
     }
 }
