@@ -26,6 +26,7 @@ builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(
     SignInOpt.RequireConfirmedAccount = false;
     setupAction.SignIn = SignInOpt;
 }).AddEntityFrameworkStores<IdentityApplicationContext>(); // Adds custom Identity DBContext.
+builder.Services.AddAuthorization();
 
 // Injecting dependancies.
 builder.Services.AddTransient<ITest, Test>();
