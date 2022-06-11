@@ -17,20 +17,30 @@ namespace CoachingApp.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateExcercice(int id,Excercise excercice)
         {
-            if (_exerciseManager.UpdateExcersise(id, excercice) == null)
+            var result = _exerciseManager.UpdateExcersise(id, excercice);
+            if (result == null)
                 return NotFound();
 
-            return Ok(_exerciseManager.UpdateExcersise(id, excercice));
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public ActionResult DeleteExcercice(int id)
         {
-            if (_exerciseManager.DeleteExcercice(id) == null)
+            var result = _exerciseManager.DeleteExcercice(id);
+            if (result == null)
                 return NotFound();
 
-            return Ok(_exerciseManager.DeleteExcercice(id));
+            return Ok(result);
         }
+        [HttpGet]
+        public ActionResult GetAll(int id)
+        {
+            
+
+            return Ok(_exerciseManager.GetAllExcercises());
+        }
+
     }
 }
 

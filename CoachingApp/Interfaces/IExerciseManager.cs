@@ -6,5 +6,7 @@ namespace CoachingApp.Interfaces
     {
         public Excercise UpdateExcersise(int id, Excercise excersise);
         public Excercise DeleteExcercice(int id);
+
+        public List<Excercise> GetAllExcercises();
     }
 }

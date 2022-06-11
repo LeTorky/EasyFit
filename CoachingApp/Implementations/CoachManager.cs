@@ -15,7 +15,7 @@ namespace CoachingApp.Implementations
         public object GetCoachById(int id)
         {
             //var GetCoach = context.Coaches.Where(c => c.id == id).Select(s => new Coach{id= s.id,age= s.age,Certificates= s.Certificates,email= s.email,Workout_Subscriptions= s.Workout_Subscriptions});
-            var GetCoach = context.Coaches.Where(c => c.id == id).Select(s => new { s.id, s.age, s.Certificates, s.email, s.Workout_Subscriptions });
+            var GetCoach = context.Coaches.Where(c => c.id == id).Select(s => new { s.id ,s.firstName,s.lastName , s.age, s.Certificates, s.email, s.Workout_Subscriptions });
 
             return GetCoach;
         }
