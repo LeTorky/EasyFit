@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using CoachingApp.Interfaces;
 using CoachingApp.Models;
+using CoachingApp.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoachingApp.Controllers
 {
@@ -10,9 +13,11 @@ namespace CoachingApp.Controllers
     public class CoachController : ControllerBase
     {
         private ICoachManager _coachManager;
-        public CoachController(ICoachManager coachManager)
+        private SignInManager<IdentityApplicationUser> _signInManager;
+        public CoachController(ICoachManager coachManager, SignInManager<IdentityApplicationUser> _SignInManager)
         {
             _coachManager = coachManager;
+            _signInManager = _SignInManager;
         }
         [HttpGet("{id}")]
         public IActionResult GetCoachById(int id)
@@ -29,12 +34,13 @@ namespace CoachingApp.Controllers
                 return NotFound();
             return Ok(result);
         }
-        [HttpDelete]
-        public IActionResult DeleteCoach()
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCoach(int id)
         {
-            if (_coachManager.DeleteCoach() == null)
+            var result = _coachManager.DeleteCoach(id);
+            if (result == null)
                 return NotFound();
-            return Ok(_coachManager.GetAllCoaches());
+            return Ok(result);
         }
         [HttpPut("{id}")]
         public IActionResult UpdateCoach(int id,Coach coach)
@@ -44,6 +50,22 @@ namespace CoachingApp.Controllers
                 return NotFound();
             return Ok(result);
         }
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<IActionResult> CoachProfile()
+        {
+            //get the signed in coach
+            //signinmanger->for signining in
+            //UserManager->to make operation on the signin manger
+            //GetUserAsync->using the get from usermanger get the coach using claims
+            //User is teh claim contaning small data about the signed in person
+            var x = User;
+            var user = await _signInManager.UserManager.GetUserAsync(User);
+            var result = _coachManager.GetCoachProfile(user);
 
+            if (result == null)
+                return NotFound();
+            return Ok(result);
+        }
     }
 }

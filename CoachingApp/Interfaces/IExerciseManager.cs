@@ -1,4 +1,5 @@
-﻿using CoachingApp.Models;
+﻿using CoachingApp.Identity;
+using CoachingApp.Models;
 
 namespace CoachingApp.Interfaces
 {
@@ -8,5 +9,7 @@ namespace CoachingApp.Interfaces
         public Excercise DeleteExcercice(int id);
 
         public List<Excercise> GetAllExcercises();
+
+        public List<Excercise> GetAllExcercisesForCoach(IdentityApplicationUser User);
     }
 }

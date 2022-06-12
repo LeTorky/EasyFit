@@ -16,7 +16,7 @@ namespace CoachingApp.Implementations
         public object GetCoachById(int id)
         {
             //var GetCoach = context.Coaches.Where(c => c.id == id).Select(s => new Coach{id= s.id,age= s.age,Certificates= s.Certificates,email= s.email,Workout_Subscriptions= s.Workout_Subscriptions});
-            var GetCoach = context.Coaches.Where(c => c.id == id).Select(s => new { s.id ,s.firstName,s.lastName , s.age, s.Certificates, s.email, s.Workout_Subscriptions });
+            var GetCoach = context.Coaches.Where(c => c.id == id).Select(s => new { s.id ,s.firstName,s.lastName , s.age, s.Certificates, s.email });
 
             return GetCoach;
         }
@@ -27,10 +27,14 @@ namespace CoachingApp.Implementations
             return GetCoachs;
         }
 
-        public List<Coach> DeleteCoach()
+        public Coach DeleteCoach(int id)
         {
-            var GetCoachs = context.Coaches.ToList();
-            return GetCoachs;
+            var CoachData = context.Coaches.Where(e => e.id == id).SingleOrDefault();
+            if (CoachData != null)
+                context.Coaches.Remove(CoachData);
+
+            context.SaveChanges();
+            return CoachData;
         }
         public Coach UpdateCoach(int id,Coach Coach)
         {
@@ -57,10 +61,9 @@ namespace CoachingApp.Implementations
             return OldCoach;
             
         }
-        public List<Coach> GetCoachProfile()
+        public Coach GetCoachProfile(IdentityApplicationUser User)
         {
-            var GetCoachs = context.Coaches.ToList();
-            return GetCoachs;
+            return User.Coach;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CoachingApp.Models;
+﻿using CoachingApp.Identity;
+using CoachingApp.Models;
 
 namespace CoachingApp.Interfaces
 {
@@ -6,8 +7,8 @@ namespace CoachingApp.Interfaces
     {
         public object GetCoachById(int id);
         public List<Coach> GetAllCoaches();
-        public List<Coach> DeleteCoach();
+        public Coach DeleteCoach(int id);
         public Coach UpdateCoach(int id, Coach Coach);
-        public List<Coach> GetCoachProfile();
+        public Coach GetCoachProfile(IdentityApplicationUser User);
     }
 }

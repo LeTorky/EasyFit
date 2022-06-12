@@ -1,4 +1,5 @@
-﻿using CoachingApp.Interfaces;
+﻿using CoachingApp.Identity;
+using CoachingApp.Interfaces;
 using CoachingApp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,6 +45,14 @@ namespace CoachingApp.Implementations
             context.SaveChanges();
             return ExcerciceData;
 
+        }
+
+        public List<Excercise> GetAllExcercisesForCoach(IdentityApplicationUser User)
+        {
+            var x = User.Coach.id;
+            var excersies=context.Excercises.Where(s=>s.coachID==User.Coach.id).ToList();
+
+            return excersies;
         }
     }
 }

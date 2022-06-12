@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using CoachingApp.Interfaces;
 using CoachingApp.Models;
+using Microsoft.AspNetCore.Identity;
+using CoachingApp.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoachingApp.Controllers
 {
@@ -10,9 +13,12 @@ namespace CoachingApp.Controllers
     public class ExerciseController : ControllerBase
     {
         private IExerciseManager _exerciseManager;
-        public ExerciseController(IExerciseManager exerciseManager)
+        private SignInManager<IdentityApplicationUser> _signInManager;
+
+        public ExerciseController(IExerciseManager exerciseManager, SignInManager<IdentityApplicationUser> _SignInManager)
         {
             _exerciseManager = exerciseManager;
+            _signInManager = _SignInManager;
         }
         [HttpPut("{id}")]
         public ActionResult UpdateExcercice(int id,Excercise excercice)
@@ -40,6 +46,21 @@ namespace CoachingApp.Controllers
 
             return Ok(_exerciseManager.GetAllExcercises());
         }
+
+        [HttpGet("coachExcercices")]
+        [Authorize]
+        public async Task<IActionResult> CoachProfile()
+        {
+           
+            var x = User;
+            var user = await _signInManager.UserManager.GetUserAsync(User);
+            var result = _exerciseManager.GetAllExcercisesForCoach(user);
+
+            if (result == null)
+                return NotFound();
+            return Ok(result);
+        }
+
 
     }
 }
