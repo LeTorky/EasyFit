@@ -4,6 +4,7 @@ using CoachingApp.Implementations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoachingApp.Migrations
 {
     [DbContext(typeof(IdentityApplicationContext))]
-    partial class IdentityApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220612153247_Added_About_In_Coach_Removed_Email_From_Coach_And_Client")]
+    partial class Added_About_In_Coach_Removed_Email_From_Coach_And_Client
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -6,6 +6,7 @@ using CoachingApp.Implementations;
 using Microsoft.EntityFrameworkCore;
 using CoachingApp.Identity;
 using Microsoft.AspNetCore.Identity;
+using CoachingApp.Models;
 
 namespace CoachingApp.Controllers
 {
@@ -29,9 +30,10 @@ namespace CoachingApp.Controllers
         }
         [HttpGet("SignIn")]
         [Authorize(Roles ="Coach")]
-        public async Task<IdentityApplicationUser> Testing()
+        public async Task<Coach> Testing()
         {
-            return await _userManager.GetUserAsync(User);
+            var x= await _userManager.GetUserAsync(User);
+            return x.Coach;
         }
     }
 }

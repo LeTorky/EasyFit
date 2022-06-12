@@ -32,9 +32,6 @@ namespace CoachingApp.Models
         public string lastName { get; set; }
         [StringLength(50)]
         public string firstName { get; set; }
-        [StringLength(100)]
-        [Unicode(false)]
-        public string email { get; set; }
         [StringLength(20)]
         [Unicode(false)]
         public string mobileNum { get; set; }
@@ -51,6 +48,8 @@ namespace CoachingApp.Models
         [StringLength(30)]
         [Unicode(false)]
         public string image { get; set; }
+        [StringLength(250)]
+        public string about { get; set; }
         public virtual IdentityApplicationUser User { get; set; }
 
         public int? speciality { get; set; }

@@ -18,8 +18,10 @@ namespace CoachingApp.Implementations
         }
         public async Task<ActionResult> TestMethod()
         {
+            //var user = new IdentityApplicationUser() { UserName = "ElMans" };
+            //await _SignInManager.UserManager.CreateAsync(user, "aA1@3000");
             //await RoleManager.CreateAsync(new IdentityApplicationRoles() { Name = "Coach" });
-            //await _SignInManager.UserManager.AddToRoleAsync(DBContext.Users.FirstOrDefault(), "Coach");
+            //await _SignInManager.UserManager.AddToRoleAsync(user, "Coach");
             await _SignInManager.SignInAsync(DBContext.Users.FirstOrDefault(), isPersistent: true);
             var Result = new OkObjectResult(DBContext.Users.FirstOrDefault());
             return Result;
