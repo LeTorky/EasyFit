@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CoachingApp.Interfaces;
+using CoachingApp.Models;
 
 namespace CoachingApp.Controllers
 {
@@ -23,9 +24,10 @@ namespace CoachingApp.Controllers
         [HttpGet]
         public IActionResult GetAllCoaches()
         {
-            if (_coachManager.GetAllCoaches() == null)
+            var result=_coachManager.GetAllCoaches();
+            if (result== null)
                 return NotFound();
-            return Ok(_coachManager.GetAllCoaches());
+            return Ok(result);
         }
         [HttpDelete]
         public IActionResult DeleteCoach()
@@ -34,12 +36,13 @@ namespace CoachingApp.Controllers
                 return NotFound();
             return Ok(_coachManager.GetAllCoaches());
         }
-        [HttpPut]
-        public IActionResult UpdateCoach()
+        [HttpPut("{id}")]
+        public IActionResult UpdateCoach(int id,Coach coach)
         {
-            if (_coachManager.UpdateCoach() == null)
+            var result = _coachManager.UpdateCoach(id, coach);
+            if (result == null)
                 return NotFound();
-            return Ok(_coachManager.UpdateCoach());
+            return Ok(result);
         }
 
     }

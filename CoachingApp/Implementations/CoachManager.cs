@@ -1,4 +1,5 @@
 ﻿using CoachingApp.Controllers;
+using CoachingApp.Identity;
 using CoachingApp.Interfaces;
 using CoachingApp.Models;
 
@@ -31,10 +32,30 @@ namespace CoachingApp.Implementations
             var GetCoachs = context.Coaches.ToList();
             return GetCoachs;
         }
-        public List<Coach> UpdateCoach()
+        public Coach UpdateCoach(int id,Coach Coach)
         {
-            var GetCoachs = context.Coaches.ToList();
-            return GetCoachs;
+            Coach OldCoach = context.Coaches.Where(c => c.id == id).SingleOrDefault();
+
+            if (OldCoach != null)
+            {
+                OldCoach.mobileNum = Coach.mobileNum;
+                OldCoach.city = Coach.city;
+                OldCoach.country = Coach.country;
+                OldCoach.email = Coach.email;
+                OldCoach.age = Coach.age;
+                OldCoach.firstName = Coach.firstName;
+                OldCoach.lastName = Coach.lastName;
+                OldCoach.gender = Coach.gender;
+                OldCoach.yearsExperience = Coach.yearsExperience;
+                OldCoach.image = Coach.image;
+
+                context.SaveChangesAsync();
+            }
+                
+
+            
+            return OldCoach;
+            
         }
         public List<Coach> GetCoachProfile()
         {

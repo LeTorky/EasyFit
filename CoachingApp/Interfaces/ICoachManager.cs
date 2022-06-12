@@ -7,7 +7,7 @@ namespace CoachingApp.Interfaces
         public object GetCoachById(int id);
         public List<Coach> GetAllCoaches();
         public List<Coach> DeleteCoach();
-        public List<Coach> UpdateCoach();
+        public Coach UpdateCoach(int id, Coach Coach);
         public List<Coach> GetCoachProfile();
     }
 }
