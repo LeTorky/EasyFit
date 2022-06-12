@@ -23,7 +23,7 @@ namespace CoachingApp.Models
         [Key]
         public int id { get; set; }
         [ForeignKey("User")]
-        public Guid userId { get; set; }
+        public Guid UserId { get; set; }
         public int age { get; set; }
         [StringLength(50)]
         public string lastName { get; set; }

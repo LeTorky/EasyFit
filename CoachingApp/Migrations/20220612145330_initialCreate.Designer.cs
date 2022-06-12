@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoachingApp.Migrations
 {
     [DbContext(typeof(IdentityApplicationContext))]
-    [Migration("20220611124327_Initial-Create")]
-    partial class InitialCreate
+    [Migration("20220612145330_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -149,6 +149,9 @@ namespace CoachingApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("age")
                         .HasColumnType("int");
 
@@ -188,15 +191,12 @@ namespace CoachingApp.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<Guid>("userId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<double?>("weight")
                         .HasColumnType("float");
 
                     b.HasKey("id");
 
-                    b.HasIndex("userId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Client");
@@ -333,6 +333,9 @@ namespace CoachingApp.Migrations
                     b.Property<int?>("NumberOfRating")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("age")
                         .HasColumnType("int");
 
@@ -375,16 +378,18 @@ namespace CoachingApp.Migrations
                     b.Property<double?>("rating")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("userId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int?>("speciality")
+                        .HasColumnType("int");
 
                     b.Property<int?>("yearsExperience")
                         .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.HasIndex("userId")
+                    b.HasIndex("UserId")
                         .IsUnique();
+
+                    b.HasIndex("speciality");
 
                     b.ToTable("Coach");
                 });
@@ -462,6 +467,25 @@ namespace CoachingApp.Migrations
                     b.HasIndex("coachID");
 
                     b.ToTable("Nutrition_Subscription");
+                });
+
+            modelBuilder.Entity("CoachingApp.Models.Speciality", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Speciality");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout", b =>
@@ -706,7 +730,7 @@ namespace CoachingApp.Migrations
                 {
                     b.HasOne("CoachingApp.Identity.IdentityApplicationUser", "User")
                         .WithOne("Client")
-                        .HasForeignKey("CoachingApp.Models.Client", "userId")
+                        .HasForeignKey("CoachingApp.Models.Client", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -809,11 +833,18 @@ namespace CoachingApp.Migrations
                 {
                     b.HasOne("CoachingApp.Identity.IdentityApplicationUser", "User")
                         .WithOne("Coach")
-                        .HasForeignKey("CoachingApp.Models.Coach", "userId")
+                        .HasForeignKey("CoachingApp.Models.Coach", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CoachingApp.Models.Speciality", "specialityNavigation")
+                        .WithMany("Coaches")
+                        .HasForeignKey("speciality")
+                        .HasConstraintName("FK_Coach_Speciality");
+
                     b.Navigation("User");
+
+                    b.Navigation("specialityNavigation");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Excercise", b =>
@@ -1017,6 +1048,11 @@ namespace CoachingApp.Migrations
                     b.Navigation("Client_Meal_NSubs");
 
                     b.Navigation("Client_NSubs");
+                });
+
+            modelBuilder.Entity("CoachingApp.Models.Speciality", b =>
+                {
+                    b.Navigation("Coaches");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout", b =>

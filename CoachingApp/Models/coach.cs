@@ -26,7 +26,7 @@ namespace CoachingApp.Models
         [Key]
         public int id { get; set; }
         [ForeignKey("User")]
-        public Guid userId { get; set; }
+        public Guid UserId { get; set; }
         public int age { get; set; }
         [StringLength(50)]
         public string lastName { get; set; }
@@ -53,6 +53,11 @@ namespace CoachingApp.Models
         public string image { get; set; }
         public virtual IdentityApplicationUser User { get; set; }
 
+        public int? speciality { get; set; }
+
+        [ForeignKey("speciality")]
+        [InverseProperty("Coaches")]
+        public virtual Speciality specialityNavigation { get; set; }
         [InverseProperty("coach")]
         public virtual ICollection<Certificate> Certificates { get; set; }
         [InverseProperty("coach")]
