@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CoachingApp.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,19 @@ namespace CoachingApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Speciality",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Speciality", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -160,7 +173,7 @@ namespace CoachingApp.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    userId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     age = table.Column<int>(type: "int", nullable: false),
                     lastName = table.Column<string>(type: "nchar(50)", fixedLength: true, maxLength: 50, nullable: true),
                     firstName = table.Column<string>(type: "nchar(50)", fixedLength: true, maxLength: 50, nullable: true),
@@ -177,8 +190,8 @@ namespace CoachingApp.Migrations
                 {
                     table.PrimaryKey("PK_Client", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Client_AspNetUsers_userId",
-                        column: x => x.userId,
+                        name: "FK_Client_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -190,7 +203,7 @@ namespace CoachingApp.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    userId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     age = table.Column<int>(type: "int", nullable: false),
                     lastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     firstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -202,17 +215,23 @@ namespace CoachingApp.Migrations
                     yearsExperience = table.Column<int>(type: "int", nullable: true),
                     rating = table.Column<double>(type: "float", nullable: true),
                     NumberOfRating = table.Column<int>(type: "int", nullable: true),
-                    image = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: true)
+                    image = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: true),
+                    speciality = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Coach", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Coach_AspNetUsers_userId",
-                        column: x => x.userId,
+                        name: "FK_Coach_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Coach_Speciality",
+                        column: x => x.speciality,
+                        principalTable: "Speciality",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -559,9 +578,9 @@ namespace CoachingApp.Migrations
                 column: "coachID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Client_userId",
+                name: "IX_Client_UserId",
                 table: "Client",
-                column: "userId",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -595,9 +614,14 @@ namespace CoachingApp.Migrations
                 column: "subID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Coach_userId",
+                name: "IX_Coach_speciality",
                 table: "Coach",
-                column: "userId",
+                column: "speciality");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Coach_UserId",
+                table: "Coach",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -708,6 +732,9 @@ namespace CoachingApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Speciality");
         }
     }
 }

@@ -22,6 +22,7 @@ namespace CoachingApp.Implementations
         public virtual DbSet<Excercise> Excercises { get; set; }
         public virtual DbSet<Meal> Meals { get; set; }
         public virtual DbSet<Nutrition_Subscription> Nutrition_Subscriptions { get; set; }
+        public virtual DbSet<Speciality> Specialities { get; set; }
         public virtual DbSet<Workout> Workouts { get; set; }
         public virtual DbSet<WorkoutSet> WorkoutSets { get; set; }
         public virtual DbSet<Workout_Exercise> Workout_Exercises { get; set; }
@@ -132,6 +133,14 @@ namespace CoachingApp.Implementations
                     .HasForeignKey(d => d.workoutID)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_client_workout_sub_Workout");
+            });
+
+            modelBuilder.Entity<Coach>(entity =>
+            {
+                entity.HasOne(d => d.specialityNavigation)
+                    .WithMany(p => p.Coaches)
+                    .HasForeignKey(d => d.speciality)
+                    .HasConstraintName("FK_Coach_Speciality");
             });
 
             modelBuilder.Entity<Excercise>(entity =>
