@@ -24,7 +24,7 @@ namespace CoachingApp.Models
         [Unicode(false)]
         public string notes { get; set; }
         public int? duration { get; set; }
-        public int? coachID { get; set; }
+        public int coachID { get; set; }
         [StringLength(200)]
         [Unicode(false)]
         public string name { get; set; }
