@@ -136,7 +136,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Certificates");
+                    b.ToTable("Certificates", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client", b =>
@@ -193,7 +193,7 @@ namespace CoachingApp.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Client");
+                    b.ToTable("Client", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client_Meal_NSub", b =>
@@ -217,7 +217,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("subID");
 
-                    b.ToTable("Client_Meal_NSub");
+                    b.ToTable("Client_Meal_NSub", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client_NSub", b =>
@@ -249,7 +249,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("subID");
 
-                    b.ToTable("Client_NSub");
+                    b.ToTable("Client_NSub", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client_Workout_WSub", b =>
@@ -281,7 +281,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("workoutID");
 
-                    b.ToTable("Client_Workout_WSub");
+                    b.ToTable("Client_Workout_WSub", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client_WSub", b =>
@@ -313,7 +313,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("subID");
 
-                    b.ToTable("Client_WSub");
+                    b.ToTable("Client_WSub", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Coach", b =>
@@ -384,7 +384,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("speciality");
 
-                    b.ToTable("Coach");
+                    b.ToTable("Coach", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Excercise", b =>
@@ -412,7 +412,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Excercise");
+                    b.ToTable("Excercise", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Meal", b =>
@@ -435,7 +435,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Meal");
+                    b.ToTable("Meal", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Nutrition_Subscription", b =>
@@ -459,7 +459,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Nutrition_Subscription");
+                    b.ToTable("Nutrition_Subscription", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Speciality", b =>
@@ -478,7 +478,7 @@ namespace CoachingApp.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Speciality");
+                    b.ToTable("Speciality", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout", b =>
@@ -509,7 +509,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Workout");
+                    b.ToTable("Workout", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout_Exercise", b =>
@@ -539,7 +539,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("excerciseID");
 
-                    b.ToTable("Workout_Exercise");
+                    b.ToTable("Workout_Exercise", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout_Subscription", b =>
@@ -560,7 +560,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Workout_Subscription");
+                    b.ToTable("Workout_Subscription", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout_WorkoutSet", b =>
@@ -579,7 +579,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("workoutID");
 
-                    b.ToTable("Workout_WorkoutSets");
+                    b.ToTable("Workout_WorkoutSets", (string)null);
                 });
 
             modelBuilder.Entity("CoachingApp.Models.WorkoutSet", b =>
@@ -602,7 +602,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("WorkoutSets");
+                    b.ToTable("WorkoutSets", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

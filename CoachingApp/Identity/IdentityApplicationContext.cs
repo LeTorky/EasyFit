@@ -77,7 +77,7 @@ namespace CoachingApp.Implementations
 
             modelBuilder.Entity<Client_NSub>(entity =>
             {
-                entity.HasKey(e => new { e.clientID, e.subID, e.startDate })
+                entity.HasKey(e => new { e.clientID, e.subID, e.subDate })
                     .HasName("PK_Client_coach_Nsubscription_1");
 
                 entity.HasOne(d => d.client)

@@ -60,7 +60,28 @@ namespace CoachingApp.Implementations
             await _context.SaveChangesAsync();
             return nutrition_Subscription;
         }
+        public async Task<Client_NSub> NewNutrRequest(int ClientId, int SubId, DateTime date, int CoachId)
+        {
+            Client_NSub NewEntry = new Client_NSub() { clientID = ClientId, subID = SubId, subDate = date, coachID = CoachId };
+            _context.Client_NSubs.Add(NewEntry);
+            await _context.SaveChangesAsync();
+            return NewEntry;
+        }
+
+        public async Task<Client_NSub> NSubStatusChange(int ClientId, int SubId, DateTime Startdate, int CoachId, bool status,DateTime RequestDate)
+        {
+            Client_NSub Subscribation = await _context.Client_NSubs.Where(s => s.clientID == ClientId && s.subID == SubId && s.subDate == RequestDate).FirstOrDefaultAsync();
+            if( Subscribation == null )
+            {
+                return null;
+            }
+            Subscribation.subDate = Startdate;
+            Subscribation.accept = status;
+            await _context.SaveChangesAsync();
+
+            return Subscribation;
 
 
+        }
     }
 }

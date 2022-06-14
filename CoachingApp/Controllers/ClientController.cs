@@ -40,7 +40,7 @@ namespace CoachingApp.Controllers
         }
 
         [HttpGet("WorkoutSubs")]
-        [Authorize(Roles ="Client")]
+        [Authorize(Roles ="Coach")]
         public async Task<IActionResult> GetWorkoutSubs()
         {
             

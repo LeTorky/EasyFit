@@ -13,9 +13,13 @@ namespace CoachingApp.Controllers
     public class NSubscriptionController : ControllerBase
     {
         private INSubscriptionManager _nSubscriptionManager;
-        public NSubscriptionController(INSubscriptionManager nSubscriptionManager)
+        private readonly SignInManager<IdentityApplicationUser> _SignInManager;
+        private IClientManager _clientManager;
+
+        public NSubscriptionController(INSubscriptionManager nSubscriptionManager, IClientManager clientManager)
         {
             _nSubscriptionManager = nSubscriptionManager;
+            _clientManager = clientManager;
         }
         // add new sub
         [HttpPost]
@@ -61,6 +65,39 @@ namespace CoachingApp.Controllers
             }
 
         }
+
+        //Add new entry tothe client-nutration sub table
+        [HttpPost("NewSubRequest")]
+        public async Task<IActionResult> NewNutrSubRequest( int ClientId,int SubId,DateTime date,int CoachId)
+        {
+            //var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
+            //if (_clientManager.GetClientByID(Client.id) == null)
+            //    return BadRequest("Client is not registerd");
+            if(ClientId==0)
+                return BadRequest("Client is not registerd");
+
+            var NewEntry= _nSubscriptionManager.NewNutrRequest(ClientId, SubId, date, CoachId);
+            return Ok(NewEntry);
+
+        }
+
+        [HttpPut("CoachChangeSubStatus")]
+        public async Task<IActionResult> SubStatseChange( int ClientId,int SubId,DateTime StartDate,int CoachId,bool status,DateTime RequestDate)
+        {
+
+            //var Coach = (await _SignInManager.UserManager.GetUserAsync(User)).Coach;
+            //if (_coachManager.GetClientByID(Client.id) == null)
+            //    return BadRequest("Client is not registerd");
+            if (CoachId == 0)
+                return BadRequest("Coach is not registerd");
+            var NewEntry = await _nSubscriptionManager.NSubStatusChange(ClientId, SubId, StartDate, CoachId, status, RequestDate);
+            if (NewEntry == null)
+                return BadRequest("Subscariton is not Availale");
+
+            return Ok(NewEntry);    
+
+        }
+
 
     }
 }

@@ -20,7 +20,9 @@ namespace CoachingApp.Models
         public int? rating { get; set; }
         [Key]
         [Column(TypeName = "date")]
-        public DateTime startDate { get; set; }
+        public DateTime subDate { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime confirmDate { get; set; }
         [Unicode(false)]
         public string comment { get; set; }
 
