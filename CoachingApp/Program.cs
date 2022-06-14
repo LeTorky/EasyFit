@@ -25,8 +25,16 @@ builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(
     SignInOpt.RequireConfirmedEmail = false;
     SignInOpt.RequireConfirmedAccount = false;
     setupAction.SignIn = SignInOpt;
-}).AddEntityFrameworkStores<IdentityApplicationContext>(); // Adds custom Identity DBContext.
-builder.Services.AddAuthorization();
+}).AddEntityFrameworkStores<IdentityApplicationContext>() // Adds custom Identity DBContext.
+.AddDefaultTokenProviders(); // Adds default Token Provider.
+builder.Services.AddAuthorization(); // Adds Authorization.
+builder.Services.AddCors(options => // Cross Origin Policy.
+{
+    options.AddPolicy(name: "Default", policy =>
+    {
+        policy.AllowAnyOrigin();
+    });
+});
 
 // Injecting dependancies.
 builder.Services.AddTransient<ITest, Test>();
@@ -50,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("Default");
 
 app.UseHttpsRedirection();
 
