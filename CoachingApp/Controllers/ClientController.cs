@@ -19,10 +19,11 @@ namespace CoachingApp.Controllers
         }
 
 
-        [HttpGet("/NutraionSubs")]
-        [Authorize("Client")]
+        [HttpGet("NutraionSubs22")]
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> GetNutritionSubs()
         {
+           
             var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
 
             if (_clientManager.GetClientByID(Client.id) == null)
@@ -38,10 +39,11 @@ namespace CoachingApp.Controllers
 
         }
 
-        [HttpGet("/WorkoutSubs")]
-        [Authorize("Client")]
+        [HttpGet("WorkoutSubs")]
+        [Authorize(Roles ="Client")]
         public async Task<IActionResult> GetWorkoutSubs()
         {
+            
             var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
 
             if (_clientManager.GetClientByID(Client.id) == null)

@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 public interface INSubscriptionManager
 {
     public  Task<Nutrition_Subscription> GetNSubByID(int id);
-    public  Task<bool> NewNutritionSubs(Nutrition_Subscription nutrition_Subscription);
-    public void EditNutritionSubs(Nutrition_Subscription nutrition_Subscription);
+    public  Task<Nutrition_Subscription> NewNutritionSubs(int ID, int Duration, int Price, int CoachId);
+    public Task<Nutrition_Subscription>  EditNutritionSubs(int ID, int Duration, int Price, int CoachId);
     public  void DeleteNutritionSub(int id);
+    public  Task<bool> GetNSubByCoachID(int id, int CoachId);
 
 }

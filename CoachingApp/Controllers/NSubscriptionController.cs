@@ -19,33 +19,38 @@ namespace CoachingApp.Controllers
         }
         // add new sub
         [HttpPost]
-        public async Task<IActionResult> NewNutSubs(Nutrition_Subscription nutrition_Subscription)
+        public async Task<IActionResult> NewNutSubs(int ID, int Duration, int Price, int CoachId)
         {
-            if (nutrition_Subscription==null)
+            if (ID ==null && CoachId==null)
             {
                 return BadRequest("Client is not registerd");
             }
-            var status= await _nSubscriptionManager.NewNutritionSubs(nutrition_Subscription);
+            var newSub= await _nSubscriptionManager.NewNutritionSubs(ID,Duration,Price,CoachId);
 
-            return Created("Nutration sub Created", nutrition_Subscription);
+            return Created("Nutration sub Created", newSub);
         }
 
-        [HttpPut("/{id}")]
-        public async Task<IActionResult> EditNutSubs(int id, Nutrition_Subscription nutrition_Subscription)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditNutSubs([FromRoute] int id, int Duration,  int Price, int CoachId )
         {
-            if (id != nutrition_Subscription.id)
+            var SubExists = await _nSubscriptionManager.GetNSubByCoachID(id, CoachId);
+
+            if (SubExists)
             {
-                return BadRequest();
+           var updated=  _nSubscriptionManager.EditNutritionSubs(id, Duration, Price, CoachId);
+                return Ok(updated);
+            }
+            else
+            {
+                return NotFound("this Sub not foubd");
             }
 
-           
 
-            return NoContent();
         }
 
         //delete sub
-        [HttpDelete("/{id}")]
-        public async Task<IActionResult> DeleteNutrition_Subscription(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteNutrition_Subscription([FromRoute]int id)
         {
             if (_nSubscriptionManager.GetNSubByID(id) == null)
                 return NotFound("This Nutration Plan dose not exsits ");
@@ -56,5 +61,6 @@ namespace CoachingApp.Controllers
             }
 
         }
+
     }
 }
