@@ -20,7 +20,7 @@ namespace CoachingApp.Models
         [StringLength(50)]
         [Unicode(false)]
         public string name { get; set; }
-        public int? coachID { get; set; }
+        public int coachID { get; set; }
 
         [ForeignKey("coachID")]
         [InverseProperty("WorkoutSets")]

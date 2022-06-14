@@ -39,5 +39,11 @@ namespace CoachingApp.Implementations
 
             return subworkout == null ? true : false;
         }
+        
+
+        public Workout_Subscription getSubscription(int subid)
+        {
+            return _context.Workout_Subscriptions.Find(subid);
+        }
     }
 }

@@ -12,20 +12,20 @@ namespace CoachingApp.Implementations
         {
             _identityApplicationContext = identityApplicationContext;
         }
-        public Client CreateClient(ClientUserDTO CoachUser, Guid UserId)
+        public Client CreateClient(ClientUserDTO ClientUser, Guid UserId)
         {
             Client NewClient = new Client()
             {
                 UserId = UserId,
-                firstName = CoachUser.firstName,
-                lastName = CoachUser.lastName,
-                age = CoachUser.age,
-                mobileNum = CoachUser.mobileNum,
-                gender = CoachUser.gender,
-                city = CoachUser.city,
-                country = CoachUser.country,
+                firstName = ClientUser.firstName,
+                lastName = ClientUser.lastName,
+                age = ClientUser.age,
+                mobileNum = ClientUser.mobileNum,
+                gender = ClientUser.gender,
+                city = ClientUser.city,
+                country = ClientUser.country,
             };
-            _identityApplicationContext.Clients.Add(NewClient);
+            _identityApplicationContext.Clients.Add(ClientUser);
             _identityApplicationContext.SaveChanges();
             return NewClient;
         }
