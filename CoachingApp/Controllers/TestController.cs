@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using CoachingApp.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using CoachingApp.Implementations;
+using Microsoft.EntityFrameworkCore;
+using CoachingApp.Identity;
+using Microsoft.AspNetCore.Identity;
+using CoachingApp.Models;
 
 namespace CoachingApp.Controllers
 {
@@ -12,10 +16,12 @@ namespace CoachingApp.Controllers
     {
         private ITest Test;
         private IdentityApplicationContext _context;
-        public TestController(ITest test, IdentityApplicationContext context)
+        private UserManager<IdentityApplicationUser> _userManager;
+        public TestController(ITest test, IdentityApplicationContext context, UserManager<IdentityApplicationUser> userManager)
         {
             Test = test;
             _context = context;
+            _userManager = userManager;
         }
         [HttpGet("Index")]
         public async Task<ActionResult> Index()
@@ -23,9 +29,11 @@ namespace CoachingApp.Controllers
             return await Test.TestMethod();
         }
         [HttpGet("SignIn")]
-        public object Testing()
+        [Authorize(Roles ="Coach")]
+        public async Task<Coach> Testing()
         {
-            return _context.Users.FirstOrDefault();
+            var x= await _userManager.GetUserAsync(User);
+            return x.Coach;
         }
     }
 }

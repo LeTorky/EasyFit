@@ -19,13 +19,22 @@ builder.Services.AddDbContext<IdentityApplicationContext>(optionsAction => // DB
         optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConneciton")); // Fetches connection string.
     });
 builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(setupAction => // Identity DI.
+{
+    SignInOptions SignInOpt = new SignInOptions();
+    SignInOpt.RequireConfirmedPhoneNumber = false;
+    SignInOpt.RequireConfirmedEmail = false;
+    SignInOpt.RequireConfirmedAccount = false;
+    setupAction.SignIn = SignInOpt;
+}).AddEntityFrameworkStores<IdentityApplicationContext>() // Adds custom Identity DBContext.
+.AddDefaultTokenProviders(); // Adds default Token Provider.
+builder.Services.AddAuthorization(); // Adds Authorization.
+builder.Services.AddCors(options => // Cross Origin Policy.
+{
+    options.AddPolicy(name: "Default", policy =>
     {
-        SignInOptions SignInOpt = new SignInOptions();
-        SignInOpt.RequireConfirmedPhoneNumber = false;
-        SignInOpt.RequireConfirmedEmail = false;
-        SignInOpt.RequireConfirmedAccount = false;
-        setupAction.SignIn = SignInOpt;
-    }).AddEntityFrameworkStores<IdentityApplicationContext>(); // Adds custom Identity DBContext.
+        policy.AllowAnyOrigin();
+    });
+});
 
 // Injecting dependancies.
 builder.Services.AddTransient<ITest, Test>();
@@ -49,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("Default");
 
 app.UseHttpsRedirection();
 
