@@ -15,7 +15,7 @@ namespace CoachingApp.Interfaces
        
              Task UpdateClient(int id, ClientUserDTO obj);
         
-              Task<Client> GetClientProfile(int userId);
+              Task<Client> GetClientProfile();
 
              List<Client> GetAllByWorkOut();
     }

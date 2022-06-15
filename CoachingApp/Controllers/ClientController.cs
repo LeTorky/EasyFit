@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CoachingApp.Interfaces;
 using CoachingApp.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoachingApp.Controllers
 {
@@ -52,12 +53,13 @@ namespace CoachingApp.Controllers
                 return NotFound();
             return Ok(_clientManager.UpdateClient(id,obj));
         }
+        [Authorize]
         [HttpGet]
-        public  IActionResult GetProfile(int id)
+        public  IActionResult GetProfile()
         {
-            if ( _clientManager.GetClientProfile(id) == null)
+            if ( _clientManager.GetClientProfile() == null)
                 return NotFound();
-            return Ok( _clientManager.GetClientProfile(id));
+            return Ok( _clientManager.GetClientProfile());
         }
         [HttpGet]
         public IActionResult GetAllByWork()
