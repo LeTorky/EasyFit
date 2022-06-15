@@ -29,8 +29,6 @@ namespace CoachingApp.Models
         public string lastName { get; set; }
         [StringLength(50)]
         public string firstName { get; set; }
-        [StringLength(100)]
-        public string email { get; set; }
         [StringLength(20)]
         public string mobileNum { get; set; }
         public bool? gender { get; set; }
