@@ -8,45 +8,44 @@ namespace CoachingApp.Implementations
 {
     public class CoachManager:ICoachManager
     {
-        private IdentityApplicationContext context { get; set; }
-        public CoachManager(IdentityApplicationContext _context)
+        private IdentityApplicationContext _identityApplicationContext;
+        public CoachManager(IdentityApplicationContext identityApplicationContext)
         {
-            this.context = _context;
+            _identityApplicationContext = identityApplicationContext;
         }
 
         public object GetCoachById(int id)
         {
             //var GetCoach = context.Coaches.Where(c => c.id == id).Select(s => new Coach{id= s.id,age= s.age,Certificates= s.Certificates,email= s.email,Workout_Subscriptions= s.Workout_Subscriptions});
-            var GetCoach = context.Coaches.Where(c => c.id == id).Select(s => new { s.id ,s.firstName,s.lastName , s.age, s.Certificates, s.email });
+            var GetCoach = _identityApplicationContext.Coaches.Where(c => c.id == id).Select(s => new { s.id ,s.firstName,s.lastName , s.age, s.Certificates});
 
             return GetCoach;
         }
 
         public List<Coach> GetAllCoaches()
         {
-            var GetCoachs = context.Coaches.ToList();
+            var GetCoachs = _identityApplicationContext.Coaches.ToList();
             return GetCoachs;
         }
 
         public Coach DeleteCoach(int id)
         {
-            var CoachData = context.Coaches.Where(e => e.id == id).SingleOrDefault();
+            var CoachData = _identityApplicationContext.Coaches.Where(e => e.id == id).SingleOrDefault();
             if (CoachData != null)
-                context.Coaches.Remove(CoachData);
+                _identityApplicationContext.Coaches.Remove(CoachData);
 
-            context.SaveChanges();
+            _identityApplicationContext.SaveChanges();
             return CoachData;
         }
         public Coach UpdateCoach(int id,Coach Coach)
         {
-            Coach OldCoach = context.Coaches.Where(c => c.id == id).SingleOrDefault();
+            Coach OldCoach = _identityApplicationContext.Coaches.Where(c => c.id == id).SingleOrDefault();
 
             if (OldCoach != null)
             {
                 OldCoach.mobileNum = Coach.mobileNum;
                 OldCoach.city = Coach.city;
                 OldCoach.country = Coach.country;
-                OldCoach.email = Coach.email;
                 OldCoach.age = Coach.age;
                 OldCoach.firstName = Coach.firstName;
                 OldCoach.lastName = Coach.lastName;
@@ -54,7 +53,7 @@ namespace CoachingApp.Implementations
                 OldCoach.yearsExperience = Coach.yearsExperience;
                 OldCoach.image = Coach.image;
 
-                context.SaveChangesAsync();
+                _identityApplicationContext.SaveChangesAsync();
             }
                 
 
@@ -66,11 +65,7 @@ namespace CoachingApp.Implementations
         {
             return User.Coach;
         }
-        private IdentityApplicationContext _identityApplicationContext;
-        public CoachManager(IdentityApplicationContext identityApplicationContext)
-        {
-            _identityApplicationContext = identityApplicationContext;
-        }
+
         public Coach CreateCoach(CoachUserDTO CoachUser, Guid UserId)
         {
             Coach NewCoach = new Coach()
