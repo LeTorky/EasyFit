@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
-namespace CoachingApp.Extensions
+namespace CoachingApp.Identity
 {
-    public class UserManagerEXT : UserManager<IdentityApplicationUser>
+    public class IdentityUserManager : UserManager<IdentityApplicationUser>
     {
         private IdentityApplicationContext _context;
-        public UserManagerEXT(IUserStore<IdentityApplicationUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<IdentityApplicationUser> passwordHasher, IEnumerable<IUserValidator<IdentityApplicationUser>> userValidators, IEnumerable<IPasswordValidator<IdentityApplicationUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<IdentityApplicationUser>> logger, IdentityApplicationContext context)
+        public IdentityUserManager(IUserStore<IdentityApplicationUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<IdentityApplicationUser> passwordHasher, IEnumerable<IUserValidator<IdentityApplicationUser>> userValidators, IEnumerable<IPasswordValidator<IdentityApplicationUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<IdentityApplicationUser>> logger, IdentityApplicationContext context)
             : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
             _context = context;
