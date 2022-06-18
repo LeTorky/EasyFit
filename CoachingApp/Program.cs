@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using CoachingApp.Interfaces;
 using CoachingApp.Implementations;
+using CoachingApp.Extensions;
 // Create application builder.
 var builder = WebApplication.CreateBuilder(args); // Creates builder.
 
@@ -26,6 +27,7 @@ builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(
     SignInOpt.RequireConfirmedAccount = false;
     setupAction.SignIn = SignInOpt;
 }).AddEntityFrameworkStores<IdentityApplicationContext>() // Adds custom Identity DBContext.
+.AddUserManager<UserManagerEXT>() // Adds custom User Manager.
 .AddDefaultTokenProviders(); // Adds default Token Provider.
 builder.Services.AddAuthorization(); // Adds Authorization.
 builder.Services.AddCors(options => // Cross Origin Policy.
