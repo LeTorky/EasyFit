@@ -12,34 +12,77 @@ namespace CoachingApp.Implementations
         {
             _context = identityApplicationContext;
         }
+        //get sub by sub id
         public async Task<Workout_Subscription> GetWSubByID(int id)
         {
             var workout_Subscription = await _context.Workout_Subscriptions.FindAsync(id);
             return workout_Subscription;
         }
-        public async void DeleteWorkoutSub(int id)
+
+
+        //get sub by sub id and coach id
+        public async Task<bool> GetWSubByCoachID(int id, int CoachId)
         {
-            var workoutSubscription = await this.GetWSubByID(id);
-            _context.Workout_Subscriptions.Remove(workoutSubscription);
-            await _context.SaveChangesAsync();
+            var workout_Subscription = _context.Workout_Subscriptions.Where(s => s.id == id && s.coachID == CoachId);
+            return workout_Subscription != null ? true : false;
         }
 
-        public async void EditWorkoutSubs(Workout_Subscription workout_Subscription)
+        // creat new sub
+        public async Task<Workout_Subscription> NewWorkoutSubs(int ID, int Duration, int Price, int CoachId)
         {
-            
+            var newSub = new Workout_Subscription() {id=ID, duration = Duration, price = Price, coachID = CoachId };
+
+            var subNutration = _context.Workout_Subscriptions.Add(newSub);
+            await _context.SaveChangesAsync();
+
+            return await this.GetWSubByID(ID);
+        }
+
+        //Delete existing sub
+        public async void DeleteWorkoutSub(int id)
+        {
+            var workout_Subscription = await this.GetWSubByID(id);
             _context.Workout_Subscriptions.Remove(workout_Subscription);
             await _context.SaveChangesAsync();
         }
-
-
-        public async Task<bool> NewWorkoutSubs(Workout_Subscription workout_Subscription)
+        // edit existing sub
+        public async Task<Workout_Subscription> EditWorkoutSubs(int ID, int Duration, int Price, int CoachId)
         {
-            var subworkout = _context.Workout_Subscriptions.Add(workout_Subscription);
+
+
+
+            var workout_Subscription = await this.GetWSubByID(ID);
+
+            workout_Subscription.duration = Duration;
+            workout_Subscription.price = Price;
+
+            await _context.SaveChangesAsync();
+            return workout_Subscription;
+        }
+        public async Task<Client_WSub> NewWorkoutSubRequest(int ClientId, int SubId, DateTime date, int CoachId)
+        {
+            Client_WSub NewEntry = new Client_WSub() { clientID = ClientId, subID = SubId, startDate = date, coachID = CoachId };
+            _context.Client_WSubs.Add(NewEntry);
+            await _context.SaveChangesAsync();
+            return NewEntry;
+        }
+
+        public async Task<Client_WSub> WSubStatusChange(int ClientId, int SubId, DateTime Startdate, int CoachId, bool status, DateTime RequestDate)
+        {
+            Client_WSub Subscribation = await _context.Client_WSubs.Where(s => s.clientID == ClientId && s.subID == SubId && s.startDate == RequestDate).FirstOrDefaultAsync();
+            if (Subscribation == null)
+            {
+                return null;
+            }
+            Subscribation.startDate = Startdate;
+            Subscribation.accept = status;
             await _context.SaveChangesAsync();
 
-            return subworkout == null ? true : false;
+            return Subscribation;
+
+
         }
-        
+
 
         public Workout_Subscription getSubscription(int subid)
         {

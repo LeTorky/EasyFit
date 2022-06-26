@@ -7,6 +7,9 @@ namespace CoachingApp.Interfaces
     {
         public Coach CreateCoach(CoachUserDTO CoachUser, Guid UserId);
         public bool isCoach(int id);
+        public  Task<IEnumerable<Client_WSub>> GetallCoachWsub(int id);
+        public  Task<IEnumerable<Client_NSub>> GetallCoachNsub(int id);
+        public  Task<Coach> GetCoachByID(int ID);
 
     }
 }

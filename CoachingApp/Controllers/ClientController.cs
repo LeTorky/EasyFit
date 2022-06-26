@@ -12,50 +12,17 @@ namespace CoachingApp.Controllers
     public class ClientController : ControllerBase
     {
         private IClientManager _clientManager;
+        private ICoachManager _coachManager;
         private readonly SignInManager<IdentityApplicationUser> _SignInManager;
-        public ClientController(IClientManager clientManager)
+        public ClientController(IClientManager clientManager, ICoachManager coachManager)
         {
             _clientManager = clientManager;
+            _coachManager = coachManager;
         }
 
 
-        [HttpGet("NutraionSubs22")]
-        [Authorize(Roles = "Client")]
-        public async Task<IActionResult> GetNutritionSubs()
-        {
-           
-            var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
+        
 
-            if (_clientManager.GetClientByID(Client.id) == null)
-                return BadRequest("Client is not registerd");
-
-
-            var subs = await _clientManager.GetallClientNsub(Client.id);
-
-            if (subs == null)
-                return Ok("Client has no Nutrition subscription");
-
-            return Ok(subs);
-
-        }
-
-        [HttpGet("WorkoutSubs")]
-        [Authorize(Roles ="Coach")]
-        public async Task<IActionResult> GetWorkoutSubs()
-        {
-            
-            var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
-
-            if (_clientManager.GetClientByID(Client.id) == null)
-                return BadRequest("Client is not registerd");
-
-            var subs = await _clientManager.GetallClientWsub(Client.id);
-
-            if (subs == null)
-                return Ok("Client has no workout subscription");
-
-            return Ok(subs);
-
-        }
+      
     }
 }

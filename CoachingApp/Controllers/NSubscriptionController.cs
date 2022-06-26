@@ -15,11 +15,15 @@ namespace CoachingApp.Controllers
         private INSubscriptionManager _nSubscriptionManager;
         private readonly SignInManager<IdentityApplicationUser> _SignInManager;
         private IClientManager _clientManager;
+      
+        private ICoachManager _coachManager;
 
-        public NSubscriptionController(INSubscriptionManager nSubscriptionManager, IClientManager clientManager)
+        public NSubscriptionController(INSubscriptionManager nSubscriptionManager, IClientManager clientManager,ICoachManager coachManager, SignInManager<IdentityApplicationUser> signInManager)
         {
             _nSubscriptionManager = nSubscriptionManager;
             _clientManager = clientManager;
+            _coachManager = coachManager;
+            _SignInManager = signInManager;
         }
         // add new sub
         [HttpPost]
@@ -41,7 +45,7 @@ namespace CoachingApp.Controllers
 
             if (SubExists)
             {
-           var updated=  _nSubscriptionManager.EditNutritionSubs(id, Duration, Price, CoachId);
+           var updated= await  _nSubscriptionManager.EditNutritionSubs(id, Duration, Price, CoachId);
                 return Ok(updated);
             }
             else
@@ -95,6 +99,46 @@ namespace CoachingApp.Controllers
                 return BadRequest("Subscariton is not Availale");
 
             return Ok(NewEntry);    
+
+        }
+        //get all sub nut for coach
+        [HttpGet("NutraionSubsCoach")]
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> GetNutritionSubsCoach()
+        {
+
+            var Coach = (await _SignInManager.UserManager.GetUserAsync(User)).Coach;
+
+            if (_coachManager.GetCoachByID(Coach.id) == null)
+                return BadRequest("Client is not registerd");
+
+
+            var subs = await _coachManager.GetCoachByID(Coach.id);
+
+            if (subs == null)
+                return Ok("Client has no Nutrition subscription");
+
+            return Ok(subs);
+
+        }
+        //get all sub nut for coach
+        [HttpGet("NutraionSubsClient")]
+        [Authorize(Roles = "Client")]
+        public async Task<IActionResult> GetNutritionSubs()
+        {
+
+            var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
+
+            if (_clientManager.GetClientByID(Client.id) == null)
+                return BadRequest("Client is not registerd");
+
+
+            var subs = await _clientManager.GetallClientNsub(Client.id);
+
+            if (subs == null)
+                return Ok("Client has no Nutrition subscription");
+
+            return Ok(subs);
 
         }
 
