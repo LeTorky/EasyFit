@@ -26,6 +26,7 @@ builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(
     SignInOpt.RequireConfirmedAccount = false;
     setupAction.SignIn = SignInOpt;
 }).AddEntityFrameworkStores<IdentityApplicationContext>() // Adds custom Identity DBContext.
+.AddUserManager<IdentityUserManager>() // Adds custom User Manager.
 .AddDefaultTokenProviders(); // Adds default Token Provider.
 builder.Services.AddAuthorization(); // Adds Authorization.
 builder.Services.AddCors(options => // Cross Origin Policy.
