@@ -21,6 +21,8 @@ namespace CoachingApp.Models
         [Key]
         [Column(TypeName = "date")]
         public DateTime startDate { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime acceptDate { get; set; }
         [Unicode(false)]
         public string comment { get; set; }
 
