@@ -13,12 +13,12 @@ namespace CoachingApp.Controllers
     public class NSubscriptionController : ControllerBase
     {
         private INSubscriptionManager _nSubscriptionManager;
-        private readonly SignInManager<IdentityApplicationUser> _SignInManager;
+        private readonly IdentityUserManager _SignInManager;
         private IClientManager _clientManager;
       
         private ICoachManager _coachManager;
 
-        public NSubscriptionController(INSubscriptionManager nSubscriptionManager, IClientManager clientManager,ICoachManager coachManager, SignInManager<IdentityApplicationUser> signInManager)
+        public NSubscriptionController(INSubscriptionManager nSubscriptionManager, IClientManager clientManager,ICoachManager coachManager, IdentityUserManager signInManager)
         {
             _nSubscriptionManager = nSubscriptionManager;
             _clientManager = clientManager;
@@ -72,29 +72,30 @@ namespace CoachingApp.Controllers
 
         //Add new entry tothe client-nutration sub table
         [HttpPost("NewSubRequest")]
-        public async Task<IActionResult> NewNutrSubRequest( int ClientId,int SubId,DateTime date,int CoachId)
+        [Authorize(Roles = "Client")]
+        public async Task<IActionResult> NewNutrSubRequest( int SubId,DateTime date,int CoachId)
         {
-            //var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
-            //if (_clientManager.GetClientByID(Client.id) == null)
-            //    return BadRequest("Client is not registerd");
-            if(ClientId==0)
-                return BadRequest("Client is not registerd");
+            var Client = (await _SignInManager.GetClientAsync(User));
 
-            var NewEntry= _nSubscriptionManager.NewNutrRequest(ClientId, SubId, date, CoachId);
+            if (Client == null)
+                return BadRequest("Client is not registerd");
+            
+
+            var NewEntry= _nSubscriptionManager.NewNutrRequest(Client.id, SubId, date, CoachId);
             return Ok(NewEntry);
 
         }
 
         [HttpPut("CoachChangeSubStatus")]
-        public async Task<IActionResult> SubStatseChange( int ClientId,int SubId,DateTime StartDate,int CoachId,bool status,DateTime RequestDate)
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> SubStatseChange( int ClientId,int SubId,DateTime StartDate,bool status,DateTime RequestDate)
         {
 
-            //var Coach = (await _SignInManager.UserManager.GetUserAsync(User)).Coach;
-            //if (_coachManager.GetClientByID(Client.id) == null)
-            //    return BadRequest("Client is not registerd");
-            if (CoachId == 0)
+            var Coach = (await _SignInManager.GetCoachAsync(User));
+
+            if (Coach == null)
                 return BadRequest("Coach is not registerd");
-            var NewEntry = await _nSubscriptionManager.NSubStatusChange(ClientId, SubId, StartDate, CoachId, status, RequestDate);
+            var NewEntry = await _nSubscriptionManager.NSubStatusChange(ClientId, SubId, StartDate, Coach.id, status, RequestDate);
             if (NewEntry == null)
                 return BadRequest("Subscariton is not Availale");
 
@@ -107,13 +108,13 @@ namespace CoachingApp.Controllers
         public async Task<IActionResult> GetNutritionSubsCoach()
         {
 
-            var Coach = (await _SignInManager.UserManager.GetUserAsync(User)).Coach;
+            var Coach = (await _SignInManager.GetCoachAsync(User));
 
-            if (_coachManager.GetCoachByID(Coach.id) == null)
-                return BadRequest("Client is not registerd");
+            if (Coach==null)
+                return BadRequest("Coach is not registerd");
 
 
-            var subs = await _coachManager.GetCoachByID(Coach.id);
+            var subs = await _nSubscriptionManager.GetallCoachNsub(Coach.id);
 
             if (subs == null)
                 return Ok("Client has no Nutrition subscription");
@@ -127,13 +128,13 @@ namespace CoachingApp.Controllers
         public async Task<IActionResult> GetNutritionSubs()
         {
 
-            var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
+            var Client = (await _SignInManager.GetClientAsync(User));
 
-            if (_clientManager.GetClientByID(Client.id) == null)
+            if (Client== null)
                 return BadRequest("Client is not registerd");
 
 
-            var subs = await _clientManager.GetallClientNsub(Client.id);
+            var subs = await _nSubscriptionManager.GetallClientNsub(Client.id);
 
             if (subs == null)
                 return Ok("Client has no Nutrition subscription");

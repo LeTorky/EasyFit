@@ -13,11 +13,11 @@ namespace CoachingApp.Controllers
     public class WSubscriptionController : ControllerBase
     {
         private IWSubscriptionManager _wSubscriptionManager;
-        private readonly SignInManager<IdentityApplicationUser> _SignInManager;
+        private readonly IdentityUserManager _SignInManager;
         private IClientManager _clientManager;
 
         private ICoachManager _coachManager;
-        public WSubscriptionController(IWSubscriptionManager wSubscriptionManager, IClientManager clientManager, ICoachManager coachManager, SignInManager<IdentityApplicationUser> signInManager)
+        public WSubscriptionController(IWSubscriptionManager wSubscriptionManager, IClientManager clientManager, ICoachManager coachManager, IdentityUserManager signInManager)
         {
             _wSubscriptionManager = wSubscriptionManager;
             _clientManager = clientManager;
@@ -69,31 +69,32 @@ namespace CoachingApp.Controllers
 
         }
 
-        //Add new entry tothe client-nutration sub table
+        //Add new entry to the client-Workout sub table
         [HttpPost("NewSubRequest")]
-        public async Task<IActionResult> NewNutrSubRequest(int ClientId, int SubId, DateTime date, int CoachId)
+        [Authorize(Roles = "Client")]
+        public async Task<IActionResult> NewNutrSubRequest( int SubId, DateTime date, int CoachId)
         {
-            //var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
-            //if (_clientManager.GetClientByID(Client.id) == null)
-            //    return BadRequest("Client is not registerd");
-            if (ClientId == 0)
+            var Client = (await _SignInManager.GetClientAsync(User));
+
+            if (Client == null)
                 return BadRequest("Client is not registerd");
 
-            var NewEntry = await _wSubscriptionManager.NewWorkoutSubRequest(ClientId, SubId, date, CoachId);
+            var NewEntry = await _wSubscriptionManager.NewWorkoutSubRequest(Client.id, SubId, date, CoachId);
             return Ok(NewEntry);
 
         }
 
         [HttpPut("CoachChangeSubStatus")]
-        public async Task<IActionResult> SubStatseChange(int ClientId, int SubId, DateTime StartDate, int CoachId, bool status, DateTime RequestDate)
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> SubStatseChange(int ClientId, int SubId, DateTime StartDate, bool status, DateTime RequestDate)
         {
 
-            //var Coach = (await _SignInManager.UserManager.GetUserAsync(User)).Coach;
-            //if (_coachManager.GetClientByID(Client.id) == null)
-            //    return BadRequest("Client is not registerd");
-            if (CoachId == 0)
+            var Coach = (await _SignInManager.GetCoachAsync(User));
+
+            if (Coach == null)
                 return BadRequest("Coach is not registerd");
-            var NewEntry = await _wSubscriptionManager.WSubStatusChange(ClientId, SubId, StartDate, CoachId, status, RequestDate);
+           
+            var NewEntry = await _wSubscriptionManager.WSubStatusChange(ClientId, SubId, StartDate, Coach.id, status, RequestDate);
             if (NewEntry == null)
                 return BadRequest("Subscariton is not Availale");
 
@@ -114,12 +115,12 @@ namespace CoachingApp.Controllers
         public async Task<IActionResult> GetWorkoutSubs()
         {
 
-            var Client = (await _SignInManager.UserManager.GetUserAsync(User)).Client;
+            var Client = (await _SignInManager.GetClientAsync(User));
 
-            if (_clientManager.GetClientByID(Client.id) == null)
+            if (Client == null)
                 return BadRequest("Client is not registerd");
 
-            var subs = await _clientManager.GetallClientWsub(Client.id);
+            var subs = await _wSubscriptionManager.GetallClientWsub(Client.id);
 
             if (subs == null)
                 return Ok("Client has no workout subscription");
@@ -137,12 +138,12 @@ namespace CoachingApp.Controllers
         public async Task<IActionResult> GetWorkoutSubsCoach()
         {
 
-            var Coach = (await _SignInManager.UserManager.GetUserAsync(User)).Coach;
+            var Coach = (await _SignInManager.GetCoachAsync(User));
 
-            if (_coachManager.GetCoachByID(Coach.id) == null)
-                return BadRequest("Client is not registerd");
+            if (Coach == null)
+                return BadRequest("Coach is not registerd");
 
-            var subs = await _coachManager.GetCoachByID(Coach.id);
+            var subs = await _wSubscriptionManager.GetallCoachWsub(Coach.id);
 
             if (subs == null)
                 return Ok("Client has no workout subscription");

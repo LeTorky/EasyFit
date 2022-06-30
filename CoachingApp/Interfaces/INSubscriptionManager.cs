@@ -11,6 +11,8 @@ public interface INSubscriptionManager
     public  Task<bool> GetNSubByCoachID(int id, int CoachId);
     public Task<Client_NSub> NewNutrRequest(int ClientId, int SubId, DateTime date, int CoachId);
     public  Task<Client_NSub> NSubStatusChange(int ClientId, int SubId, DateTime Startdate, int CoachId, bool status, DateTime RequestDate);
+    public Task<IEnumerable<Client_NSub>> GetallCoachNsub(int id);
+    public  Task<IEnumerable<Client_NSub>> GetallClientNsub(int id);
 
 
 

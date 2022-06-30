@@ -88,5 +88,20 @@ namespace CoachingApp.Implementations
         {
             return _context.Workout_Subscriptions.Find(subid);
         }
+        //return workout subs
+        public async Task<IEnumerable<Client_WSub>> GetallCoachWsub(int id)
+        {
+            var Subs = await _context.Client_WSubs.Where(s => s.coachID == id).ToListAsync();
+            return Subs;
+
+        }
+
+        //return workout subs
+        public async Task<IEnumerable<Client_WSub>> GetallClientWsub(int id)
+        {
+            var Subs = await _context.Client_WSubs.Where(s => s.clientID == id).ToListAsync();
+            return Subs;
+
+        }
     }
 }

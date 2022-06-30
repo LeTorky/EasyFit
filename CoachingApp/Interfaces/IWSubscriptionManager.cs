@@ -12,6 +12,8 @@ namespace CoachingApp.Interfaces
         public Task<Client_WSub> NewWorkoutSubRequest(int ClientId, int SubId, DateTime date, int CoachId);
         public Task<Client_WSub> WSubStatusChange(int ClientId, int SubId, DateTime Startdate, int CoachId, bool status, DateTime RequestDate);
         public Workout_Subscription getSubscription(int subid);
+        public Task<IEnumerable<Client_WSub>> GetallCoachWsub(int id);
+        public Task<IEnumerable<Client_WSub>> GetallClientWsub(int id);
 
     }
 }

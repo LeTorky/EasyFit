@@ -83,5 +83,22 @@ namespace CoachingApp.Implementations
 
 
         }
+        //return Nutration subs
+        // both et all sub are active or still under approval 
+        public async Task<IEnumerable<Client_NSub>> GetallCoachNsub(int id)
+        {
+            var Subs = await _context.Client_NSubs.Where(s => s.coachID == id).ToListAsync();
+            return Subs;
+
+        }
+
+        //return Nutration subs
+        // both et all sub are active or still under approval 
+        public async Task<IEnumerable<Client_NSub>> GetallClientNsub(int id)
+        {
+            var Subs = await _context.Client_NSubs.Where(s => s.clientID == id).ToListAsync();
+            return Subs;
+
+        }
     }
 }

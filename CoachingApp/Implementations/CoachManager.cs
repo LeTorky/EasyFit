@@ -42,20 +42,6 @@ namespace CoachingApp.Implementations
             var coach = await _identityApplicationContext.Coaches.Where(i => i.id == ID).FirstOrDefaultAsync();
             return coach;
         }
-        //return Nutration subs
-        // both et all sub are active or still under approval 
-        public async Task<IEnumerable<Client_NSub>> GetallCoachNsub(int id)
-        {
-            var Subs = await _identityApplicationContext.Client_NSubs.Where(s => s.coachID == id).ToListAsync();
-            return Subs;
-
-        }
-        //return workout subs
-        public async Task<IEnumerable<Client_WSub>> GetallCoachWsub(int id)
-        {
-            var Subs = await _identityApplicationContext.Client_WSubs.Where(s => s.coachID == id).ToListAsync();
-            return Subs;
-
-        }
+        
     }
 }
