@@ -9,6 +9,7 @@ namespace CoachingApp.Interfaces
         public bool workoutExists(string name, int coachid);
         public Workout updateWorkout(int workoutid, Workout workout);
         public Client_Workout_WSub updateWorkoutStatus(int workoutID, int clientID, int subID, DateTime woDate, int status, string clientNotes);
-
+        public List<Workout> getWorkoutsByCoachId(int coachId);
+        public bool deleteWorkOut(int coachId, int workoutId);
     }
 }

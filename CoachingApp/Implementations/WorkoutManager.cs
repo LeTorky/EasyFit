@@ -53,6 +53,26 @@ namespace CoachingApp.Implementations
         {
             return (_context.Workouts.Any(w => w.name == name && w.coachID == coachid));
         }
+        public List<Workout> getWorkoutsByCoachId(int coachId)
+        {
+            return (_context.Workouts.Where(w => w.coach.id == coachId).ToList());
+        }
+        public bool deleteWorkOut(int coachId, int workoutId)
+        {
+            if (!_context.Client_Workout_WSubs.Where(wo => (wo.workoutID == workoutId) && (wo.workout.coach.id == coachId)).Any()
+                && !_context.Workout_WorkoutSets.Where(WoS => WoS.workout.id == workoutId).Any())
+            {
+                Workout Workout = _context.Workouts.Where(wo => wo.id == workoutId).FirstOrDefault();
+                if(Workout != null)
+                {
+                    _context.Workouts.Remove( Workout );
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
 
     }
 }
