@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CoachingApp.Interfaces;
+using CoachingApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using CoachingApp.Identity;
+using CoachingApp.DTO;
 
 namespace CoachingApp.Controllers
 {
@@ -9,10 +14,85 @@ namespace CoachingApp.Controllers
     public class WorkoutController : ControllerBase
     {
         private IWorkoutManager _workoutManager;
-        public WorkoutController(IWorkoutManager workoutManager)
+        private ICoachManager _coachManager;
+        private IWorkoutSetsManager _workoutSetsManager;
+        private IWSubscriptionManager _wSubscriptionManager;
+        private readonly SignInManager<IdentityApplicationUser> _signInManager;
+        private Coach Coach;
+        private Client Client;
+
+        public WorkoutController(IWorkoutManager workoutManager, ICoachManager coachManager, SignInManager<IdentityApplicationUser> signInManager, IWorkoutSetsManager workoutSetsManager, IWSubscriptionManager wSubscriptionManager)
         {
             _workoutManager = workoutManager;
+            _coachManager = coachManager;
+            _signInManager = signInManager;
+            _workoutSetsManager = workoutSetsManager;
+            _wSubscriptionManager = wSubscriptionManager;
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> addWorkout([FromBody] Workout workout)
+        {
+            Coach = (await _signInManager.UserManager.GetUserAsync(User)).Coach;
+
+            if (!_coachManager.isCoach(Coach.id))
+                return NotFound("coach isnot registered!");
+            if (workout.coachID != Coach.id)
+                return Unauthorized("you cannot add a workout to another coach!");
+            if (_workoutManager.workoutExists(workout.name, workout.coachID))
+                return BadRequest("this workout already exits for this coach");
+            var newWorkout = await _workoutManager.addWorkout(workout);
+            return Ok(newWorkout);
+        }
+
+        [HttpPost("assignSet")]
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> assignWorkoutsViaWorkoutSet(int subID, int clientID, IEnumerable<WorkoutWithDateDto> workouts)
+        {
+            Coach = (await _signInManager.UserManager.GetUserAsync(User)).Coach;
+            if (!_coachManager.isCoach(Coach.id))
+                return NotFound("coach isnot registered!");
+            var subscription = _wSubscriptionManager.getSubscription(subID);
+            if (subscription == null)
+                return NotFound("subscription doesnot exist!");
+            if(subscription.coachID != Coach.id)
+                return Unauthorized("you cannot add into a subscription thats not yours!");
+            var clientworkoutSub = _workoutSetsManager.assignWorkoutsToClient(Coach.id, clientID, subID, workouts);
+
+            return Ok(clientworkoutSub);
+        }
+
+        [HttpPut("{workoutID}")]
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> updateWorkout(int workoutID, [FromBody] Workout workout)
+        {
+            Coach = (await _signInManager.UserManager.GetUserAsync(User)).Coach;
+
+            if (!_coachManager.isCoach(Coach.id))
+                return NotFound("coach isnot registered!");
+            if (!_workoutManager.workoutExists(workout.id))
+                return BadRequest("this workout doesnot exist!");
+            if (workout.coachID != Coach.id)
+                return Unauthorized("you cannot update a workout for another coach!");
+
+            var mywo = _workoutManager.updateWorkout(workoutID, workout);
+            return Ok(mywo);
+        }
+
+        [Authorize(Roles = "Client")]
+        [HttpPut("{workoutID}/status")]
+        public async Task<IActionResult> updateWorkoutStatus(int workoutID, int subID, DateTime woDate, int status, string clientNotes)
+        {
+            Client = (await _signInManager.UserManager.GetUserAsync(User)).Client;
+            if (!_workoutManager.workoutExists(workoutID))
+                return BadRequest("this workout doesnot exist!");
+            var mywo = _workoutManager.updateWorkoutStatus(workoutID, Client.id, subID, woDate, status, clientNotes);
+            if (mywo == null)
+                return NotFound("this client doesnot have this workout!");
+            return Ok(mywo);
+        }
+
     }
 }
 

@@ -11,13 +11,13 @@ var builder = WebApplication.CreateBuilder(args); // Creates builder.
 // Add services to the container.
 builder.Services.AddControllers() // Maps URL with controllers.
     .AddNewtonsoftJson(options => // Serializes Action returns.
-{
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; // Handles Loop Referencing.
-}); 
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; // Handles Loop Referencing.
+    }); 
 builder.Services.AddDbContext<IdentityApplicationContext>(optionsAction => // DBContext DI.
-{
-    optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConneciton")); // Fetches connection string.
-});
+    {
+        optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConneciton")); // Fetches connection string.
+    });
 builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(setupAction => // Identity DI.
 {
     SignInOptions SignInOpt = new SignInOptions();
