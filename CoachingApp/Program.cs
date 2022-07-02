@@ -11,13 +11,13 @@ var builder = WebApplication.CreateBuilder(args); // Creates builder.
 // Add services to the container.
 builder.Services.AddControllers() // Maps URL with controllers.
     .AddNewtonsoftJson(options => // Serializes Action returns.
-{
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; // Handles Loop Referencing.
-}); 
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; // Handles Loop Referencing.
+    }); 
 builder.Services.AddDbContext<IdentityApplicationContext>(optionsAction => // DBContext DI.
-{
-    optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConneciton")); // Fetches connection string.
-});
+    {
+        optionsAction.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConneciton")); // Fetches connection string.
+    });
 builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(setupAction => // Identity DI.
 {
     SignInOptions SignInOpt = new SignInOptions();
@@ -26,6 +26,7 @@ builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(
     SignInOpt.RequireConfirmedAccount = false;
     setupAction.SignIn = SignInOpt;
 }).AddEntityFrameworkStores<IdentityApplicationContext>() // Adds custom Identity DBContext.
+.AddUserManager<IdentityUserManager>() // Adds custom User Manager.
 .AddDefaultTokenProviders(); // Adds default Token Provider.
 builder.Services.AddAuthorization(); // Adds Authorization.
 builder.Services.AddCors(options => // Cross Origin Policy.

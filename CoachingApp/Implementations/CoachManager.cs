@@ -87,5 +87,9 @@ namespace CoachingApp.Implementations
             _identityApplicationContext.SaveChanges();
             return NewCoach;
         }
+        public bool isCoach(int id)
+        {
+            return _identityApplicationContext.Coaches.Any(c=>c.id == id);
+        }
     }
 }
