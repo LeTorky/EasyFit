@@ -61,6 +61,7 @@ namespace CoachingApp.Controllers
             //User is teh claim contaning small data about the signed in person
             var x = User;
             var user = await _signInManager.UserManager.GetUserAsync(User);
+            var y = user.UserName;
             var result = _coachManager.GetCoachProfile(user);
 
             if (result == null)

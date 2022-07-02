@@ -63,6 +63,7 @@ namespace CoachingApp.Implementations
         }
         public Coach GetCoachProfile(IdentityApplicationUser User)
         {
+            var x = User;
             return User.Coach;
         }
 
