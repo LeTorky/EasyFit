@@ -13,8 +13,8 @@ namespace CoachingApp.Controllers
     public class CoachController : ControllerBase
     {
         private ICoachManager _coachManager;
-        private SignInManager<IdentityApplicationUser> _signInManager;
-        public CoachController(ICoachManager coachManager, SignInManager<IdentityApplicationUser> _SignInManager)
+        private IdentityUserManager _signInManager;
+        public CoachController(ICoachManager coachManager, IdentityUserManager _SignInManager)
         {
             _coachManager = coachManager;
             _signInManager = _SignInManager;
@@ -51,7 +51,7 @@ namespace CoachingApp.Controllers
             return Ok(result);
         }
         [HttpGet("profile")]
-        [Authorize]
+        [Authorize(Roles = "Coach")]
         public async Task<IActionResult> CoachProfile()
         {
             //get the signed in coach
@@ -60,13 +60,12 @@ namespace CoachingApp.Controllers
             //GetUserAsync->using the get from usermanger get the coach using claims
             //User is teh claim contaning small data about the signed in person
             var x = User;
-            var user = await _signInManager.UserManager.GetUserAsync(User);
-            var y = user.UserName;
-            var result = _coachManager.GetCoachProfile(user);
+            var user = await  _signInManager.GetCoachAsync(User);
+ 
 
-            if (result == null)
+            if (user == null)
                 return NotFound();
-            return Ok(result);
+            return Ok(user);
         }
     }
 }

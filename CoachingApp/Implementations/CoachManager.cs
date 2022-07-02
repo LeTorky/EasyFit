@@ -61,11 +61,10 @@ namespace CoachingApp.Implementations
             return OldCoach;
             
         }
-        public Coach GetCoachProfile(IdentityApplicationUser User)
-        {
-            var x = User;
-            return User.Coach;
-        }
+        //public Coach GetCoachProfile(IdentityUserManager User)
+        //{
+        //    return User;
+        //}
 
         public Coach CreateCoach(CoachUserDTO CoachUser, Guid UserId)
         {

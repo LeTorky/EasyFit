@@ -12,7 +12,7 @@ namespace CoachingApp.Interfaces
         public List<Coach> GetAllCoaches();
         public Coach DeleteCoach(int id);
         public Coach UpdateCoach(int id, Coach Coach);
-        public Coach GetCoachProfile(IdentityApplicationUser User);
+      //  public Coach GetCoachProfile(IdentityApplicationUser User);
         public Coach CreateCoach(CoachUserDTO CoachUser, Guid UserId);
         public bool isCoach(int id);
 
