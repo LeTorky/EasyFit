@@ -10,6 +10,6 @@ namespace CoachingApp.Interfaces
 
         public List<Excercise> GetAllExcercises();
 
-        public List<Excercise> GetAllExcercisesForCoach(IdentityApplicationUser User);
+        public List<Excercise> GetAllExcercisesForCoach(Coach User);
     }
 }

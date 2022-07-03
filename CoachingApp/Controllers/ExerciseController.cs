@@ -13,9 +13,8 @@ namespace CoachingApp.Controllers
     public class ExerciseController : ControllerBase
     {
         private IExerciseManager _exerciseManager;
-        private SignInManager<IdentityApplicationUser> _signInManager;
-
-        public ExerciseController(IExerciseManager exerciseManager, SignInManager<IdentityApplicationUser> _SignInManager)
+        private IdentityUserManager _signInManager;
+        public ExerciseController(IExerciseManager exerciseManager, IdentityUserManager _SignInManager)
         {
             _exerciseManager = exerciseManager;
             _signInManager = _SignInManager;
@@ -49,11 +48,11 @@ namespace CoachingApp.Controllers
 
         [HttpGet("coachExcercices")]
         [Authorize]
-        public async Task<IActionResult> CoachProfile()
+        public async Task<IActionResult> CoachProfile()  
         {
            
             var x = User;
-            var user = await _signInManager.UserManager.GetUserAsync(User);
+            var user = await _signInManager.GetCoachAsync(User);
             var result = _exerciseManager.GetAllExcercisesForCoach(user);
 
             if (result == null)

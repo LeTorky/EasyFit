@@ -47,10 +47,10 @@ namespace CoachingApp.Implementations
 
         }
 
-        public List<Excercise> GetAllExcercisesForCoach(IdentityApplicationUser User)
+        public List<Excercise> GetAllExcercisesForCoach(Coach User)
         {
-            var x = User.Coach.id;
-            var excersies=context.Excercises.Where(s=>s.coachID==User.Coach.id).ToList();
+            var x = User;
+            var excersies=context.Excercises.Where(s=>s.coachID==User.id).ToList();
 
             return excersies;
         }
