@@ -9,14 +9,14 @@ namespace CoachingApp.Implementations
     public class ClientManager : IClientManager
     {
         private IdentityApplicationContext _identityApplicationContext;
-        private readonly UserManager<Client> _userManager;
-        private readonly SignInManager<Client> _signInManager;
-        public ClientManager(IdentityApplicationContext identityApplicationContext,UserManager<Client> userManager,SignInManager<Client> signInManager)
+       // private readonly UserManager<Client> _userManager;
+       // private readonly SignInManager<Client> _signInManager;
+        public ClientManager(IdentityApplicationContext identityApplicationContext/*,UserManager<Client> userManager,SignInManager<Client> signInManager*/)
         {
 
             _identityApplicationContext = identityApplicationContext;
-            _userManager = userManager;
-            _signInManager = signInManager;
+           // _userManager = userManager;
+            //_signInManager = signInManager;
 
 
 
@@ -85,14 +85,14 @@ namespace CoachingApp.Implementations
 
         }
         //bring the user who sign in
-        public async Task<Client> GetClientProfile()
-        {
-            var userId = _userManager.GetUserId(_signInManager.Context.User);
+        //public async Task<Client> GetClientProfile()
+        //{
+        //    var userId = _userManager.GetUserId(_signInManager.Context.User);
 
-            var Clients = await _identityApplicationContext.Clients.FindAsync(userId);
-            return Clients;
+        //    var Clients = await _identityApplicationContext.Clients.FindAsync(userId);
+        //    return Clients;
 
-        }
+        //}
 
         public List<Client> GetAllByWorkOut()
         {

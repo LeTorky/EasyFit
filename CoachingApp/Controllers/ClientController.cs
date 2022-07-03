@@ -53,14 +53,14 @@ namespace CoachingApp.Controllers
                 return NotFound();
             return Ok(_clientManager.UpdateClient(id,obj));
         }
-        [Authorize]
-        [HttpGet]
-        public  IActionResult GetProfile()
-        {
-            if ( _clientManager.GetClientProfile() == null)
-                return NotFound();
-            return Ok( _clientManager.GetClientProfile());
-        }
+        //[Authorize]
+        //[HttpGet]
+        //public  IActionResult GetProfile()
+        //{
+        //    if ( _clientManager.GetClientProfile() == null)
+        //        return NotFound();
+        //    return Ok( _clientManager.GetClientProfile());
+        //}
         [HttpGet]
         public IActionResult GetAllByWork()
         {
