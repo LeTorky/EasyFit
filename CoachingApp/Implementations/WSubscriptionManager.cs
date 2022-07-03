@@ -69,12 +69,12 @@ namespace CoachingApp.Implementations
 
         public async Task<Client_WSub> WSubStatusChange(int ClientId, int SubId, DateTime Startdate, int CoachId, bool status, DateTime RequestDate)
         {
-            Client_WSub Subscribation = await _context.Client_WSubs.Where(s => s.clientID == ClientId && s.subID == SubId && s.startDate == RequestDate).FirstOrDefaultAsync();
+            Client_WSub Subscribation = await _context.Client_WSubs.Where(s => s.clientID == ClientId && s.subID == SubId && s.startDate == Startdate).FirstOrDefaultAsync();
             if (Subscribation == null)
             {
                 return null;
             }
-            Subscribation.startDate = Startdate;
+            Subscribation.acceptDate = RequestDate;
             Subscribation.accept = status;
             await _context.SaveChangesAsync();
 
