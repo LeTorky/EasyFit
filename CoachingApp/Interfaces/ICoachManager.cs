@@ -15,6 +15,8 @@ namespace CoachingApp.Interfaces
       //  public Coach GetCoachProfile(IdentityApplicationUser User);
         public Coach CreateCoach(CoachUserDTO CoachUser, Guid UserId);
         public bool isCoach(int id);
+        
+        public  Task<Coach> GetCoachByID(int ID);
 
     }
 }

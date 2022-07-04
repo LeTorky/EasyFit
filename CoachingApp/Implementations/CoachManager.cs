@@ -3,6 +3,7 @@ using CoachingApp.Controllers;
 using CoachingApp.Identity;
 using CoachingApp.Interfaces;
 using CoachingApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Implementations
 {
@@ -90,5 +91,12 @@ namespace CoachingApp.Implementations
         {
             return _identityApplicationContext.Coaches.Any(c=>c.id == id);
         }
+        // get clients by id
+        public async Task<Coach> GetCoachByID(int ID)
+        {
+            var coach = await _identityApplicationContext.Coaches.Where(i => i.id == ID).FirstOrDefaultAsync();
+            return coach;
+        }
+        
     }
 }

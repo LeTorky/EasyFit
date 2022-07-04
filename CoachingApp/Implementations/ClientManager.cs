@@ -1,6 +1,7 @@
 ﻿using CoachingApp.DTO;
 using CoachingApp.Interfaces;
 using CoachingApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Implementations
 {
@@ -28,5 +29,14 @@ namespace CoachingApp.Implementations
             _identityApplicationContext.SaveChanges();
             return NewClient;
         }
+
+        // get clients by id
+        public async Task<Client> GetClientByID(int ID)
+        {
+            var Client = await _identityApplicationContext.Clients.Where(i => i.id == ID).FirstOrDefaultAsync();
+            return Client;
+        }
+
+      
     }
 }

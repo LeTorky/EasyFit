@@ -1,6 +1,21 @@
-﻿namespace CoachingApp.Interfaces
+﻿namespace CoachingApp.Interfaces;
+using CoachingApp.Models;
+using Microsoft.AspNetCore.Mvc;
+
+public interface INSubscriptionManager
 {
-    public interface INSubscriptionManager
-    {
-    }
+    public  Task<Nutrition_Subscription> GetNSubByID(int id);
+    public  Task<Nutrition_Subscription> NewNutritionSubs(int ID, int Duration, int Price, int CoachId);
+    public Task<Nutrition_Subscription>  EditNutritionSubs(int ID, int Duration, int Price, int CoachId);
+    public  void DeleteNutritionSub(int id);
+    public  Task<bool> GetNSubByCoachID(int id, int CoachId);
+    public Task<Client_NSub> NewNutrRequest(int ClientId, int SubId, DateTime date, int CoachId);
+    public  Task<Client_NSub> NSubStatusChange(int ClientId, int SubId, DateTime Startdate, int CoachId, bool status, DateTime RequestDate);
+    public Task<IEnumerable<Client_NSub>> GetallCoachNsub(int id);
+    public  Task<IEnumerable<Client_NSub>> GetallClientNsub(int id);
+
+
+
+
+
 }
