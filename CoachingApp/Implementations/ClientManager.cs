@@ -1,42 +1,103 @@
 ﻿using CoachingApp.DTO;
 using CoachingApp.Interfaces;
 using CoachingApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoachingApp.Implementations
 {
-    public class ClientManager:IClientManager
+    public class ClientManager : IClientManager
     {
         private IdentityApplicationContext _identityApplicationContext;
-        public ClientManager(IdentityApplicationContext identityApplicationContext)
+        // private readonly UserManager<Client> _userManager;
+        // private readonly SignInManager<Client> _signInManager;
+        public ClientManager(IdentityApplicationContext identityApplicationContext/*/, UserManager<Client> userManager, SignInManager<Client> signInManager/*/)
         {
+
             _identityApplicationContext = identityApplicationContext;
+            // _userManager = userManager;
+            //_signInManager = signInManager;
+
+
+
         }
-        public Client CreateClient(ClientUserDTO ClientUser, Guid UserId)
+        public Client CreateClient(ClientUserDTO CoachUser, Guid UserId)
         {
             Client NewClient = new Client()
             {
                 UserId = UserId,
-                firstName = ClientUser.firstName,
-                lastName = ClientUser.lastName,
-                age = ClientUser.age,
-                mobileNum = ClientUser.mobileNum,
-                gender = ClientUser.gender,
-                city = ClientUser.city,
-                country = ClientUser.country,
+                firstName = CoachUser.firstName,
+                lastName = CoachUser.lastName,
+                age = CoachUser.age,
+                mobileNum = CoachUser.mobileNum,
+                gender = CoachUser.gender,
+                city = CoachUser.city,
+                country = CoachUser.country,
             };
-            _identityApplicationContext.Clients.Add(ClientUser);
+            _identityApplicationContext.Clients.Add(NewClient);
+
             _identityApplicationContext.SaveChanges();
+
             return NewClient;
         }
 
-        // get clients by id
-        public async Task<Client> GetClientByID(int ID)
+        public Client GetClientById(int id)
         {
-            var Client = await _identityApplicationContext.Clients.Where(i => i.id == ID).FirstOrDefaultAsync();
+            var Client = _identityApplicationContext.Clients.Where(c => c.id == id).SingleOrDefault();
+
             return Client;
         }
 
-      
+
+
+        public List<Client> GetAllClients()
+        {
+            var Clients = _identityApplicationContext.Clients.ToList();
+
+            return Clients;
+        }
+
+
+
+        public async Task DeleteClient(int id)
+        {
+            var Clients = await _identityApplicationContext.Clients.FindAsync(id);
+            _identityApplicationContext.Clients.Remove(Clients);
+            await _identityApplicationContext.SaveChangesAsync();
+
+        }
+        public async Task UpdateClient(int id, ClientUserDTO obj)
+        {
+            var Clients = await _identityApplicationContext.Clients.FindAsync(id);
+            Clients.firstName = obj.firstName;
+            Clients.lastName = obj.lastName;
+            Clients.age = obj.age;
+            Clients.mobileNum = obj.mobileNum;
+            Clients.gender = obj.gender;
+            Clients.city = obj.city;
+            Clients.country = obj.country;
+            Clients.weight = obj.weight;
+            Clients.height = obj.height;
+            await _identityApplicationContext.SaveChangesAsync();
+
+
+
+
+        }
+        //bring the user who sign in
+        public async Task<Client> GetClientProfile(int id)
+        {
+            
+
+            var Clients = await _identityApplicationContext.Clients.FindAsync(id);
+            return Clients;
+
+        }
+
+        public List<Client> GetAllByWorkOut()
+        {
+            var clientWithWork = _identityApplicationContext.Clients.Include(a => a.Client_Workout_WSubs).ToList();
+            return clientWithWork;
+        }
     }
 }
