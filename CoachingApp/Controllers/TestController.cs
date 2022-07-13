@@ -17,11 +17,13 @@ namespace CoachingApp.Controllers
         private ITest Test;
         private IdentityApplicationContext _context;
         private UserManager<IdentityApplicationUser> _userManager;
-        public TestController(ITest test, IdentityApplicationContext context, UserManager<IdentityApplicationUser> userManager)
+        private RoleManager<IdentityApplicationRoles> roleManager;
+        public TestController(ITest test, IdentityApplicationContext context, UserManager<IdentityApplicationUser> userManager, RoleManager<IdentityApplicationRoles> _roleManager)
         {
             Test = test;
             _context = context;
             _userManager = userManager;
+            roleManager = _roleManager;
         }
         [HttpGet("Index")]
         public async Task<ActionResult> Index()
@@ -29,11 +31,12 @@ namespace CoachingApp.Controllers
             return await Test.TestMethod();
         }
         [HttpGet("SignIn")]
-        [Authorize(Roles ="Coach")]
-        public async Task<Coach> Testing()
+        //[Authorize(Roles ="Coach")]
+        public async Task<bool> Testing()
         {
-            var x= await _userManager.GetUserAsync(User);
-            return x.Coach;
+            await roleManager.CreateAsync(new IdentityApplicationRoles() { Name = "Client" });
+            //var x= await _userManager.GetUserAsync(User);
+            return true;
         }
     }
 }

@@ -18,6 +18,7 @@ namespace CoachingApp.Models
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public int? duration { get; set; }
         public int? price { get; set; }

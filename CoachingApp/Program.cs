@@ -33,7 +33,7 @@ builder.Services.AddCors(options => // Cross Origin Policy.
 {
     options.AddPolicy(name: "Default", policy =>
     {
-        policy.AllowAnyOrigin();
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
 builder.Services.ConfigureApplicationCookie(configure =>
