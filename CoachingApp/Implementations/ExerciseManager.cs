@@ -54,5 +54,24 @@ namespace CoachingApp.Implementations
 
             return excersies;
         }
+        public Excercise AddExcersise( Excercise excersise)
+        {
+
+
+            var OldExcercice = new Excercise();
+
+            if (excersise != null)
+            {
+                OldExcercice.link = excersise.link;
+                OldExcercice.description = excersise.description;
+                OldExcercice.coachID = excersise.coachID;
+                context.Excercises.Add(OldExcercice);
+                context.SaveChanges();
+            }
+
+
+            return OldExcercice;
+
+        }
     }
 }

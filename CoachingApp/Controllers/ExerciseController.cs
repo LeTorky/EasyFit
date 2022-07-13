@@ -19,6 +19,15 @@ namespace CoachingApp.Controllers
             _exerciseManager = exerciseManager;
             _signInManager = _SignInManager;
         }
+        [HttpPost]
+        public ActionResult AddExcercice( Excercise excercice)
+        {
+            var result = _exerciseManager.AddExcersise(excercice);
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
         [HttpPut("{id}")]
         public ActionResult UpdateExcercice(int id,Excercise excercice)
         {
