@@ -36,7 +36,11 @@ builder.Services.AddCors(options => // Cross Origin Policy.
         policy.AllowAnyOrigin();
     });
 });
-
+builder.Services.ConfigureApplicationCookie(configure =>
+{
+    configure.Cookie.Name = "EasyFit";
+    configure.Cookie.HttpOnly = false;
+});
 // Injecting dependancies.
 builder.Services.AddTransient<ITest, Test>();
 builder.Services.AddTransient<ICoachManager, CoachManager>();
