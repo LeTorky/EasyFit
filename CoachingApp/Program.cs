@@ -36,10 +36,11 @@ builder.Services.AddCors(options => // Cross Origin Policy.
         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
-builder.Services.ConfigureApplicationCookie(configure =>
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    configure.Cookie.Name = "EasyFit";
-    configure.Cookie.HttpOnly = false;
+    options.Cookie.HttpOnly = false;
+    options.Cookie.Name = "EasyFit";
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
 });
 // Injecting dependancies.
 builder.Services.AddTransient<ITest, Test>();
@@ -58,11 +59,11 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseCors("Default");
 
