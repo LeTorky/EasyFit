@@ -8,6 +8,13 @@ using CoachingApp.Implementations;
 // Create application builder.
 var builder = WebApplication.CreateBuilder(args); // Creates builder.
 
+builder.Services.AddCors(options => // Cross Origin Policy.
+{
+    options.AddPolicy(name: "Default", policy =>
+    {
+        policy.WithOrigins("https://coachingg.herokuapp.com", "https://easyfit.azurewebsites.net").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+    });
+});
 // Add services to the container.
 builder.Services.AddControllers() // Maps URL with controllers.
     .AddNewtonsoftJson(options => // Serializes Action returns.
@@ -29,13 +36,6 @@ builder.Services.AddIdentity<IdentityApplicationUser, IdentityApplicationRoles>(
 .AddUserManager<IdentityUserManager>() // Adds custom User Manager.
 .AddDefaultTokenProviders(); // Adds default Token Provider.
 builder.Services.AddAuthorization(); // Adds Authorization.
-builder.Services.AddCors(options => // Cross Origin Policy.
-{
-    options.AddPolicy(name: "Default", policy =>
-    {
-        policy.WithOrigins("https://coachingg.herokuapp.com", "https://easyfit.azurewebsites.net").AllowAnyMethod().AllowAnyHeader().AllowCredentials();
-    });
-});
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = false;
