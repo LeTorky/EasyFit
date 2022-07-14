@@ -12,8 +12,7 @@ builder.Services.AddCors(options => // Cross Origin Policy.
 {
     options.AddPolicy(name: "Default", policy =>
     {
-        policy.WithOrigins("https://coachingg.herokuapp.com").WithMethods("GET", "PUT",
-        "POST", "DELETE").AllowAnyHeader().AllowCredentials();
+        policy.WithOrigins("https://coachingg.herokuapp.com").WithMethods().AllowAnyHeader().AllowCredentials();
     });
 });
 // Add services to the container.
