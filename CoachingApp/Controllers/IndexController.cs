@@ -12,7 +12,7 @@ namespace CoachingApp.Controllers
         {
             return new ContentResult()
             {
-                Content ="<script>" + @"fetch('https://localhost:7109/api/Account/Login', { method:""POST"", credentials: 'include', headers:{ 'Content-Type': 'application/json', 'Accept': 'application/json', 'Access-Control-Allow-Origin' : 'https://coachingg.herokuapp.com', }, body: '{""userName"":""TestingOne"", ""password"":""aA1@3000""}' } ).then(x=>x.json().then(y=>console.log(y)))"+
+                Content ="<script>" + @"fetch('https://easyfit.azurewebsites.net/api/Account/Login', { method:""POST"", credentials: 'include', headers:{ 'Content-Type': 'application/json', 'Accept': 'application/json', 'Access-Control-Allow-Origin' : 'https://coachingg.herokuapp.com', }, body: '{""userName"":""TestingOne"", ""password"":""aA1@3000""}' } ).then(x=>x.json().then(y=>console.log(y)))"+
                 "</script>",
                 ContentType = "text/html"
             };
