@@ -41,7 +41,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = false;
     options.Cookie.Name = "EasyFit";
     options.Cookie.SecurePolicy = CookieSecurePolicy.None;
-    options.Cookie.Expiration = DateTime.Now.Subtract(DateTime.UtcNow).Add(TimeSpan.FromDays(5));
+    options.ExpireTimeSpan = DateTime.Now.Subtract(DateTime.UtcNow).Add(TimeSpan.FromDays(5));
 });
 // Injecting dependancies.
 builder.Services.AddTransient<ITest, Test>();
