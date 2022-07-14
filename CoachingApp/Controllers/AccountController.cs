@@ -15,13 +15,15 @@ namespace CoachingApp.Controllers
     public class AccountController : ControllerBase
     {
         private SignInManager<IdentityApplicationUser> _signInManager;
+        private IdentityUserManager _userManager;
         private ICoachManager _coachManager;
         private IClientManager _clientManager;
-        public AccountController(SignInManager<IdentityApplicationUser> signInManager, ICoachManager coachManager, IClientManager clientManager)
+        public AccountController(SignInManager<IdentityApplicationUser> signInManager, ICoachManager coachManager, IClientManager clientManager, IdentityUserManager userManager)
         {
             _signInManager = signInManager;
             _coachManager = coachManager;
             _clientManager = clientManager;
+            _userManager = userManager;
         }
 
         [HttpPost("CoachRegister")]
@@ -36,7 +38,7 @@ namespace CoachingApp.Controllers
                 await _signInManager.UserManager.AddToRoleAsync(NewUser, "Coach");
                 _coachManager.CreateCoach(CoachDTO, NewUser.Id);
                 _signInManager.SignInAsync(NewUser, isPersistent: false);
-                return Ok(NewUser);
+                return Ok(new {Role="Coach"});
             }
             return BadRequest("UserName or Email already exists!");
         }
@@ -53,7 +55,7 @@ namespace CoachingApp.Controllers
                 await _signInManager.UserManager.AddToRoleAsync(NewUser, "Client");
                 _clientManager.CreateClient(ClientDTO, NewUser.Id);
                 _signInManager.SignInAsync(NewUser, isPersistent: false);
-                return Ok(NewUser);
+                return Ok(new { Role = "Client" });
             }
             return BadRequest("UserName or Email already exists!");
         }
@@ -63,7 +65,20 @@ namespace CoachingApp.Controllers
         {
             if ((await _signInManager.PasswordSignInAsync(UserLogin.UserName, UserLogin.Password, isPersistent:false, lockoutOnFailure: false)).Succeeded)
             {
-                return Ok(UserLogin);
+                string Role;
+                if(await _userManager.GetClientAsync(User) != null)
+                {
+                    Role = "Client";
+                }
+                else if(await _userManager.GetCoachAsync(User) != null)
+                {
+                    Role = "Coach";
+                }
+                else
+                {
+                    Role = "None";
+                }
+                return Ok(new {Role = Role });
             }
             return BadRequest(UserLogin);
         }
