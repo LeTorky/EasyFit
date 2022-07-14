@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "./static/css/main.3759c0d6.css",
+    "main.js": "./static/js/main.8cfb5058.js",
+    "static/js/787.58f37a23.chunk.js": "./static/js/787.58f37a23.chunk.js",
+    "static/media/fa-solid-900.ttf": "./static/media/fa-solid-900.e615bbcb258550973c16.ttf",
+    "static/media/primeicons.svg": "./static/media/primeicons.c6e2053303524e39530c.svg",
+    "static/media/fa-brands-400.ttf": "./static/media/fa-brands-400.b823fc0dbb5a5f0c21bb.ttf",
+    "static/media/fa-solid-900.woff2": "./static/media/fa-solid-900.59edf72a325ac2048d60.woff2",
+    "static/media/fa-brands-400.woff2": "./static/media/fa-brands-400.ebb7a127d2d8ee6f1832.woff2",
+    "static/media/primeicons.eot": "./static/media/primeicons.7fc4d8e224d1ff1b9c62.eot",
+    "static/media/primeicons.woff": "./static/media/primeicons.449aa8c65cdc5c2a8686.woff",
+    "static/media/primeicons.ttf": "./static/media/primeicons.91bacab1f083f2795272.ttf",
+    "static/media/fa-regular-400.ttf": "./static/media/fa-regular-400.0d03b1bbd1d62c1e1284.ttf",
+    "static/media/roboto-v20-latin-ext_latin-700.woff": "./static/media/roboto-v20-latin-ext_latin-700.8aba6dc5d991e4367d7a.woff",
+    "static/media/roboto-v20-latin-ext_latin-500.woff": "./static/media/roboto-v20-latin-ext_latin-500.e492ac63197a57e7f4d3.woff",
+    "static/media/roboto-v20-latin-ext_latin-regular.woff": "./static/media/roboto-v20-latin-ext_latin-regular.ae804dc012b1b5255474.woff",
+    "static/media/fa-regular-400.woff2": "./static/media/fa-regular-400.0caf4c6cf244a90efcc5.woff2",
+    "static/media/roboto-v20-latin-ext_latin-500.woff2": "./static/media/roboto-v20-latin-ext_latin-500.0b45721325446d537b54.woff2",
+    "static/media/roboto-v20-latin-ext_latin-700.woff2": "./static/media/roboto-v20-latin-ext_latin-700.1d1ef7788f0ff084b881.woff2",
+    "static/media/roboto-v20-latin-ext_latin-regular.woff2": "./static/media/roboto-v20-latin-ext_latin-regular.5cb5c8f08bb4e6cb64c3.woff2",
+    "static/media/fa-v4compatibility.ttf": "./static/media/fa-v4compatibility.4baccb548138840fa33a.ttf",
+    "static/media/fa-v4compatibility.woff2": "./static/media/fa-v4compatibility.afac89562a5301459069.woff2",
+    "index.html": "./index.html",
+    "main.3759c0d6.css.map": "./static/css/main.3759c0d6.css.map",
+    "main.8cfb5058.js.map": "./static/js/main.8cfb5058.js.map",
+    "787.58f37a23.chunk.js.map": "./static/js/787.58f37a23.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3759c0d6.css",
+    "static/js/main.8cfb5058.js"
+  ]
+}

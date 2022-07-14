@@ -10,12 +10,8 @@ namespace CoachingApp.Controllers
         [HttpGet]
         public ContentResult Index()
         {
-            return new ContentResult()
-            {
-                Content ="<script>" + @"fetch('https://easyfit.azurewebsites.net/api/Account/Login', { method:""POST"", credentials: 'include', headers:{ 'Content-Type': 'application/json', 'Accept': 'application/json', 'Access-Control-Allow-Origin' : 'https://coachingg.herokuapp.com', }, body: '{""userName"":""TestingOne"", ""password"":""aA1@3000""}' } ).then(x=>x.json().then(y=>console.log(y)))"+
-                "</script>",
-                ContentType = "text/html"
-            };
+            string html = System.IO.File.ReadAllText(@"./wwwroot/index.html");
+            return base.Content(html, "text/html");
         }
     }
 }
