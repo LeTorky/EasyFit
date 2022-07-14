@@ -33,7 +33,7 @@ builder.Services.AddCors(options => // Cross Origin Policy.
 {
     options.AddPolicy(name: "Default", policy =>
     {
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+        policy.WithOrigins("https://coachingg.herokuapp.com/").AllowAnyMethod().AllowAnyHeader();
     });
 });
 builder.Services.ConfigureApplicationCookie(options =>
