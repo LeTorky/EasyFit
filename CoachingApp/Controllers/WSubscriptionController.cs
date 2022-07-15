@@ -5,6 +5,7 @@ using CoachingApp.Models;
 using CoachingApp.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using CoachingApp.DTO;
 
 namespace CoachingApp.Controllers
 {
@@ -86,7 +87,7 @@ namespace CoachingApp.Controllers
 
         [HttpPut("CoachChangeSubStatus")]
         [Authorize(Roles = "Coach")]
-        public async Task<IActionResult> SubStatseChange(int ClientId, int SubId, DateTime StartDate, bool status, DateTime RequestDate)
+        public async Task<IActionResult> SubStatseChange(CoachStatusDTO coachStatus)
         {
 
             var Coach = (await _SignInManager.GetCoachAsync(User));
@@ -94,7 +95,7 @@ namespace CoachingApp.Controllers
             if (Coach == null)
                 return BadRequest("Coach is not registerd");
            
-            var NewEntry = await _wSubscriptionManager.WSubStatusChange(ClientId, SubId, StartDate, Coach.id, status, RequestDate);
+            var NewEntry = await _wSubscriptionManager.WSubStatusChange(coachStatus.ClientId, coachStatus.SubId, coachStatus.StartDate, Coach.id, coachStatus.status, coachStatus.RequestDate);
             if (NewEntry == null)
                 return BadRequest("Subscariton is not Availale");
 
