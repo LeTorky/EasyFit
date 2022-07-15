@@ -91,7 +91,7 @@ namespace CoachingApp.Implementations
         //return workout subs
         public async Task<IEnumerable<Client_WSub>> GetallCoachWsub(int id)
         {
-            var Subs = await _context.Client_WSubs.Where(s => s.coachID == id).ToListAsync();
+            var Subs = await _context.Client_WSubs.Include(s=>s.client).Where(s => s.coachID == id).ToListAsync();
             return Subs;
 
         }
@@ -99,7 +99,7 @@ namespace CoachingApp.Implementations
         //return workout subs
         public async Task<IEnumerable<Client_WSub>> GetallClientWsub(int id)
         {
-            var Subs = await _context.Client_WSubs.Where(s => s.clientID == id).ToListAsync();
+            var Subs = await _context.Client_WSubs.Include(s => s.coach).Where(s => s.clientID == id).ToListAsync();
             return Subs;
 
         }

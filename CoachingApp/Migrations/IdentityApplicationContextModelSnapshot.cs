@@ -136,7 +136,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Certificates", (string)null);
+                    b.ToTable("Certificates");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client", b =>
@@ -193,7 +193,7 @@ namespace CoachingApp.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Client", (string)null);
+                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client_Meal_NSub", b =>
@@ -217,7 +217,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("subID");
 
-                    b.ToTable("Client_Meal_NSub", (string)null);
+                    b.ToTable("Client_Meal_NSub");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client_NSub", b =>
@@ -252,7 +252,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("subID");
 
-                    b.ToTable("Client_NSub", (string)null);
+                    b.ToTable("Client_NSub");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client_Workout_WSub", b =>
@@ -284,7 +284,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("workoutID");
 
-                    b.ToTable("Client_Workout_WSub", (string)null);
+                    b.ToTable("Client_Workout_WSub");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Client_WSub", b =>
@@ -317,9 +317,11 @@ namespace CoachingApp.Migrations
                     b.HasKey("clientID", "subID", "startDate")
                         .HasName("PK_Client_coach_WOsubscription_1");
 
+                    b.HasIndex("coachID");
+
                     b.HasIndex("subID");
 
-                    b.ToTable("Client_WSub", (string)null);
+                    b.ToTable("Client_WSub");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Coach", b =>
@@ -390,7 +392,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("speciality");
 
-                    b.ToTable("Coach", (string)null);
+                    b.ToTable("Coach");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Excercise", b =>
@@ -418,7 +420,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Excercise", (string)null);
+                    b.ToTable("Excercise");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Meal", b =>
@@ -441,7 +443,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Meal", (string)null);
+                    b.ToTable("Meal");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Nutrition_Subscription", b =>
@@ -465,7 +467,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Nutrition_Subscription", (string)null);
+                    b.ToTable("Nutrition_Subscription");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Speciality", b =>
@@ -484,7 +486,7 @@ namespace CoachingApp.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Speciality", (string)null);
+                    b.ToTable("Speciality");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout", b =>
@@ -515,7 +517,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Workout", (string)null);
+                    b.ToTable("Workout");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout_Exercise", b =>
@@ -545,7 +547,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("excerciseID");
 
-                    b.ToTable("Workout_Exercise", (string)null);
+                    b.ToTable("Workout_Exercise");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout_Subscription", b =>
@@ -566,7 +568,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("Workout_Subscription", (string)null);
+                    b.ToTable("Workout_Subscription");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.Workout_WorkoutSet", b =>
@@ -585,7 +587,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("workoutID");
 
-                    b.ToTable("Workout_WorkoutSets", (string)null);
+                    b.ToTable("Workout_WorkoutSets");
                 });
 
             modelBuilder.Entity("CoachingApp.Models.WorkoutSet", b =>
@@ -608,7 +610,7 @@ namespace CoachingApp.Migrations
 
                     b.HasIndex("coachID");
 
-                    b.ToTable("WorkoutSets", (string)null);
+                    b.ToTable("WorkoutSets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -817,6 +819,12 @@ namespace CoachingApp.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Client_coach_WOsubscription_client");
 
+                    b.HasOne("CoachingApp.Models.Coach", "coach")
+                        .WithMany("Client_WSubs")
+                        .HasForeignKey("coachID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CoachingApp.Models.Workout_Subscription", "sub")
                         .WithMany("Client_WSubs")
                         .HasForeignKey("subID")
@@ -824,6 +832,8 @@ namespace CoachingApp.Migrations
                         .HasConstraintName("FK_Client_coach_WOsubscription_Workout_Subscription");
 
                     b.Navigation("client");
+
+                    b.Navigation("coach");
 
                     b.Navigation("sub");
                 });
@@ -1022,6 +1032,8 @@ namespace CoachingApp.Migrations
             modelBuilder.Entity("CoachingApp.Models.Coach", b =>
                 {
                     b.Navigation("Certificates");
+
+                    b.Navigation("Client_WSubs");
 
                     b.Navigation("Excercises");
 
