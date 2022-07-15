@@ -71,5 +71,7 @@ namespace CoachingApp.Models
         public virtual ICollection<Workout_Subscription> Workout_Subscriptions { get; set; }
         [InverseProperty("coach")]
         public virtual ICollection<Workout> Workouts { get; set; }
+        [InverseProperty("coach")]
+        public virtual ICollection<Client_WSub> Client_WSubs { get; set; }
     }
 }

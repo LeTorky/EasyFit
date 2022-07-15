@@ -32,5 +32,8 @@ namespace CoachingApp.Models
         [ForeignKey("subID")]
         [InverseProperty("Client_WSubs")]
         public virtual Workout_Subscription sub { get; set; }
+        [ForeignKey("coachID")]
+        [InverseProperty("Client_WSubs")]
+        public virtual Coach coach { get; set; }
     }
 }
