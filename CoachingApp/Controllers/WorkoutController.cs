@@ -38,9 +38,7 @@ namespace CoachingApp.Controllers
 
             if (!_coachManager.isCoach(Coach.id))
                 return NotFound("coach isnot registered!");
-            if (workout.coachID != Coach.id)
-                return Unauthorized("you cannot add a workout to another coach!");
-            if (_workoutManager.workoutExists(workout.name, workout.coachID))
+            if (_workoutManager.workoutExists(workout.name, Coach.id))
                 return BadRequest("this workout already exits for this coach");
             var newWorkout = await _workoutManager.addWorkout(workout);
             return Ok(newWorkout);

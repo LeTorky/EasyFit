@@ -54,7 +54,7 @@ namespace CoachingApp.Implementations
 
             return excersies;
         }
-        public Excercise AddExcersise( Excercise excersise)
+        public Excercise AddExcersise( Excercise excersise, int coachid)
         {
 
 
@@ -64,7 +64,7 @@ namespace CoachingApp.Implementations
             {
                 OldExcercice.link = excersise.link;
                 OldExcercice.description = excersise.description;
-                OldExcercice.coachID = excersise.coachID;
+                OldExcercice.coachID = coachid;
                 context.Excercises.Add(OldExcercice);
                 context.SaveChanges();
             }

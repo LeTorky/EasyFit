@@ -20,9 +20,11 @@ namespace CoachingApp.Controllers
             _signInManager = _SignInManager;
         }
         [HttpPost]
-        public ActionResult AddExcercice( Excercise excercice)
+        public async Task<ActionResult> AddExcercice( Excercise excercice)
         {
-            var result = _exerciseManager.AddExcersise(excercice);
+            Coach Coach = (await _signInManager.GetCoachAsync(User));
+
+            var result = _exerciseManager.AddExcersise(excercice, Coach.id);
             if (result == null)
                 return NotFound();
 
