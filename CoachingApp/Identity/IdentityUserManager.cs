@@ -25,5 +25,15 @@ namespace CoachingApp.Identity
             IdentityApplicationUser IdentityUser = await GetUserAsync(User);
             return _context.Clients.Where(Client => Client.User == IdentityUser).FirstOrDefault();
         }
+        public async Task<Coach> GetCoachAsyncByUsername(string Username)
+        {
+            IdentityApplicationUser User = await base.FindByNameAsync(Username);
+            return _context.Coaches.Where(Coach => Coach.User == User).FirstOrDefault();
+        }
+        public async Task<Client> GetClientAsyncByUsername(string Username)
+        {
+            IdentityApplicationUser User = await base.FindByNameAsync(Username);
+            return _context.Clients.Where(Coach => Coach.User == User).FirstOrDefault();
+        }
     }
 }

@@ -65,18 +65,14 @@ namespace CoachingApp.Controllers
         {
             if ((await _signInManager.PasswordSignInAsync(UserLogin.UserName, UserLogin.Password, isPersistent:false, lockoutOnFailure: false)).Succeeded)
             {
-                string Role;
-                if(await _userManager.GetClientAsync(User) != null)
+                string Role = "None";
+                if(await _userManager.GetClientAsyncByUsername(UserLogin.UserName) != null)
                 {
                     Role = "Client";
                 }
-                else if(await _userManager.GetCoachAsync(User) != null)
+                else if(await _userManager.GetCoachAsyncByUsername(UserLogin.UserName) != null)
                 {
                     Role = "Coach";
-                }
-                else
-                {
-                    Role = "None";
                 }
                 return Ok(new {Role = Role });
             }
