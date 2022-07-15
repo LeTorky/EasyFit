@@ -99,7 +99,7 @@ namespace CoachingApp.Controllers
             Coach = (await _signInManager.GetCoachAsync(User));
             return Ok(_workoutManager.getWorkoutsByCoachId(Coach.id));
         }
-        [HttpDelete("delete")]
+        [HttpDelete("{workoutId}")]
         [Authorize(Roles = "Coach")]
         public async Task<IActionResult> deleteWorkOut(int workoutId)
         {
@@ -108,6 +108,7 @@ namespace CoachingApp.Controllers
                 return Ok("Deleted Workout!");
             return BadRequest("Workout exists in a workout set, client workouts or doesn't exist!");
         }
+
     }
 }
 
