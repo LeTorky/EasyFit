@@ -50,10 +50,10 @@ namespace CoachingApp.Controllers
             return Ok(_clientManager.DeleteClient(id));
         }
         [HttpPut("{id}")]
-        public IActionResult UpdateClient(int id, ClientUserDTO obj)
+        public async Task<IActionResult> UpdateClient(int id, ClientUserDTO obj)
         {
-            if (_clientManager.UpdateClient(id, obj) == null)
-                return NotFound();
+            //if ( await _clientManager.UpdateClient(id, obj) == null)
+            //    return NotFound();
             return Ok(_clientManager.UpdateClient(id, obj));
         }
         [HttpGet("ClientProfile")]

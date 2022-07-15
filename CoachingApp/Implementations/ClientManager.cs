@@ -68,21 +68,18 @@ namespace CoachingApp.Implementations
         }
         public async Task UpdateClient(int id, ClientUserDTO obj)
         {
-            var Clients = await _identityApplicationContext.Clients.FindAsync(id);
+            int x = id;
+            var Clients =  _identityApplicationContext.Clients.Where(i=>i.id==id).FirstOrDefault();
             Clients.firstName = obj.firstName;
             Clients.lastName = obj.lastName;
             Clients.age = obj.age;
             Clients.mobileNum = obj.mobileNum;
-            Clients.gender = obj.gender;
+         //   Clients.gender = obj.gender;
             Clients.city = obj.city;
             Clients.country = obj.country;
             Clients.weight = obj.weight;
             Clients.height = obj.height;
             await _identityApplicationContext.SaveChangesAsync();
-
-
-
-
         }
         //bring the user who sign in
         public async Task<Client> GetClientProfile(int id)
