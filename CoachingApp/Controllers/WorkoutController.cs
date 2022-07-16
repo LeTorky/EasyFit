@@ -72,8 +72,6 @@ namespace CoachingApp.Controllers
                 return NotFound("coach isnot registered!");
             if (!_workoutManager.workoutExists(workout.id))
                 return BadRequest("this workout doesnot exist!");
-            if (workout.coachID != Coach.id)
-                return Unauthorized("you cannot update a workout for another coach!");
 
             var mywo = _workoutManager.updateWorkout(workoutID, workout);
             return Ok(mywo);
@@ -107,7 +105,35 @@ namespace CoachingApp.Controllers
                 return Ok("Deleted Workout!");
             return BadRequest("Workout exists in a workout set, client workouts or doesn't exist!");
         }
-
+        [HttpGet("workoutClientSub")]
+        [Authorize(Roles = "Client")]
+        public async Task<IActionResult> getClientSubWorkOuts(int SubId)
+        {
+            Client = (await _signInManager.GetClientAsync(User));
+            if(Client == null)
+                return Unauthorized("Please Sign In");
+            return Ok(_workoutManager.getWorkoutByClientSub(Client.id, SubId));
+        }
+        [HttpGet("workoutClientSubCoach")]
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> getClientSubWorkOutsCoach(int ClientId, int SubId)
+        {
+            Coach = (await _signInManager.GetCoachAsync(User));
+            if (Coach == null)
+                return Unauthorized("Please Sign In");
+            return Ok(_workoutManager.getWorkoutByClientSubCoach(Coach.id, ClientId, SubId));
+        }
+        [HttpPost("addWorkOutClientSub")]
+        [Authorize(Roles = "Coach")]
+        public async Task<IActionResult> addWorkOutClientSub(int WorkoutId, int ClientId, int subId, string Notes)
+        {
+            Coach = (await _signInManager.GetCoachAsync(User));
+            if (Coach == null)
+                return Unauthorized("Please Sign In");
+            if (_workoutManager.addWorkOutToClientSub(WorkoutId, ClientId, subId, Coach.id, Notes))
+                return Ok("Added Successfully!");
+            return BadRequest("Make sure the workout exists and client is suscribed!");
+        }
     }
 }
 
