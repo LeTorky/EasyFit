@@ -12,5 +12,6 @@ namespace CoachingApp.Interfaces
 
         public List<Excercise> GetAllExcercisesForCoach(Coach User);
         public Excercise AddExcersise(Excercise excersise, int coachid);
+        public List<Workout_Exercise> getExcerciseByWorkOutId(int ClientId, int WorkoutId, int SubId);
     }
 }

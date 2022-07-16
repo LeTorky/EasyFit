@@ -71,7 +71,13 @@ namespace CoachingApp.Controllers
             return Ok(result);
         }
 
-
+        [HttpGet("getExerciseByWorkOutId")]
+        [Authorize(Roles = "Client")]
+        public async Task<IActionResult> getExerciseByWorkOutId(int WorkoutId, int SubId)
+        {
+            Client Client = await _signInManager.GetClientAsync(User);
+            return Ok(_exerciseManager.getExcerciseByWorkOutId(Client.id, WorkoutId, SubId));
+        }
     }
 }
 

@@ -73,5 +73,11 @@ namespace CoachingApp.Implementations
             return OldExcercice;
 
         }
+
+
+        public List<Workout_Exercise> getExcerciseByWorkOutId(int ClientId, int WorkoutId, int SubId)
+        {
+            return context.Workout_Exercises.Where(WoEx => WoEx.workoutID == WorkoutId).Include(WoEx => WoEx.excercise).ToList();
+        }
     }
 }
