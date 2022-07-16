@@ -40,6 +40,7 @@ namespace CoachingApp.Controllers
                 return NotFound("coach isnot registered!");
             if (_workoutManager.workoutExists(workout.name, Coach.id))
                 return BadRequest("this workout already exits for this coach");
+            workout.coachID = Coach.id;
             var newWorkout = await _workoutManager.addWorkout(workout);
             return Ok(newWorkout);
         }
