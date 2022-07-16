@@ -33,6 +33,7 @@ namespace CoachingApp.Controllers
                 return NotFound("coach isnot registered!");
             return Ok(_workoutSetsManager.getWorkoutsByCoachID(Coach.id));
         }
+
         
         [HttpPost]
         [Authorize(Roles = "Coach")]

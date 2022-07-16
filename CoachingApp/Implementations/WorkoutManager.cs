@@ -55,7 +55,7 @@ namespace CoachingApp.Implementations
         }
         public List<Workout> getWorkoutsByCoachId(int coachId)
         {
-            return (_context.Workouts.Where(w => w.coach.id == coachId).ToList());
+            return (_context.Workouts.Include(w=>w.Workout_Exercises).ThenInclude(w=>w.excercise).Where(w => w.coach.id == coachId).ToList());
         }
         public bool deleteWorkOut(int coachId, int workoutId)
         {
