@@ -73,14 +73,14 @@ namespace CoachingApp.Controllers
         //Add new entry to the client-Workout sub table
         [HttpPost("NewSubRequest")]
         [Authorize(Roles = "Client")]
-        public async Task<IActionResult> NewNutrSubRequest( int SubId, DateTime date, int CoachId)
+        public async Task<IActionResult> NewNutrSubRequest(ClientNewRequestDTO requestDTO)
         {
             var Client = (await _SignInManager.GetClientAsync(User));
 
             if (Client == null)
                 return BadRequest("Client is not registerd");
 
-            var NewEntry = await _wSubscriptionManager.NewWorkoutSubRequest(Client.id, SubId, date, CoachId);
+            var NewEntry = await _wSubscriptionManager.NewWorkoutSubRequest(Client.id, requestDTO.SubId, requestDTO.date, requestDTO.CoachId);
             return Ok(NewEntry);
 
         }
